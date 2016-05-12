@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Yoke by hernandev</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Yoke</h1>
+      <h2 class="project-tagline">Yoke: SSH Connection Manager</h2>
+      <a href="https://github.com/hernandev/yoke" class="btn">View on GitHub</a>
+      <a href="https://github.com/hernandev/yoke/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/hernandev/yoke/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h2>
+<a id="yoke-ssh-connection-manager" class="anchor" href="#yoke-ssh-connection-manager" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Yoke: SSH Connection Manager</h2>
+
+<p>Yoke is a PHP based <strong>SSH connection manager</strong>. Sometimes storing servers hosts, usernames, ports and passwords can be tricky, SSH Key authentication makes it easier for us but it don't solve the problem of remembering all the other information.
+Also, sometimes we face ourselfs with more than one private key to authenticate with (like multiple accounts on AWS).</p>
+
+<p>Yoke aims to be a single repository for server managements to allow you to fastly connect to your servers just by remembering it's alias, like.</p>
+
+<div class="highlight highlight-source-shell"><pre>yoke connect myserver</pre></div>
+
+<p>With security in mind, all information about your servers is encrypted using <strong>AES 256</strong>.</p>
+
+<p><strong>NOTICE</strong> The encryption key is also stored into your computer, Yoke encryption only makes it harder for users to identify and decrypt the information. But just like SSH private keys, it does not protects against people getting access to your filesystem.</p>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<blockquote>
+<p>.phar distribution may be available in the future.</p>
+</blockquote>
+
+<p>In order to use Yoke, you need PHP 5.5+ installed, with openssl extension enables (default on most installs)</p>
+
+<p>The installation process is based on the global composer packages, so you need to have a working composer install with the correct binary path settings. <a href="https://akrabat.com/global-installation-of-php-tools-with-composer/">Read this tutorial </a></p>
+
+<p>If you have the requirements, install Yoke by running:</p>
+
+<div class="highlight highlight-source-shell"><pre>composer global require hernandev/yoke</pre></div>
+
+<p>This is all you need to do! Time for usage instructions.</p>
+
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h3>
+
+<p>Using Yoke is really simple and straightforward.</p>
+
+<h4>
+<a id="adding-a-server-connection" class="anchor" href="#adding-a-server-connection" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding a Server Connection</h4>
+
+<p>In order to store a new connection, just run the command</p>
+
+<div class="highlight highlight-source-shell"><pre>yoke add</pre></div>
+
+<p>You will then be presented with a few questions:</p>
+
+<pre><code>Registering a new Server Configuration! 
+
+Server connection alias (server1): sample-server
+
+Server username (none): sample-user
+
+Server hostname or IP Address (192.168.0.1): server.sampleapp.com
+
+Server Port (22): 6262
+
+Authentication Method:[system|key|password] (system): key  
+
+Private Key (~/.ssh/id_rsa): 
+
+Server registered successfully! 
+</code></pre>
+
+<h4>
+<a id="connecting" class="anchor" href="#connecting" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Connecting</h4>
+
+<p>As we have this connection in place, we can stablish a connection, anytime we want just by running a simple command:</p>
+
+<pre><code>yoke connect sample-server
+</code></pre>
+
+<p>Easy right?</p>
+
+<h4>
+<a id="listing-connections" class="anchor" href="#listing-connections" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Listing connections</h4>
+
+<p>Forgot a server alias? Don't worry, you can just run:</p>
+
+<pre><code>yoke servers
+</code></pre>
+
+<p>To see a list of stored connections, like this one</p>
+
+<pre><code>+---------------+----------------------+-------------+------+--------------+
+| Name          | Host                 | Username    | Port | Auth. Method |
++---------------+----------------------+-------------+------+--------------+
+| server-a      | a.sampleapp.comm     | admin       | 22   | key          |
+| server-b      | b.sampleapp.com      | root        | 2222 | system       |
+| server-c      | c.sampleapp.com      | root        | 22   | password     |
++---------------+----------------------+-------------+------+--------------+
+</code></pre>
+
+<h4>
+<a id="removing-a-connection" class="anchor" href="#removing-a-connection" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Removing a connection</h4>
+
+<p>Don't need a stored connection anymore?</p>
+
+<p>Just run</p>
+
+<pre><code>yoke delete connection-name
+</code></pre>
+
+<p>Confirm the deletion and it's done!.</p>
+
+<h4>
+<a id="final-notes" class="anchor" href="#final-notes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Final Notes:</h4>
+
+<p>There are 3 different allows authentication types:</p>
+
+<ul>
+<li>
+<code>key</code> - uses a specified private key to stabilish the connection</li>
+<li>
+<code>system</code> - Do not specify a private key to connect, it lets ssh try to connection with current user's key</li>
+<li>
+<code>password</code> - SSH does not allow passing plain password as a parameter, Yoke will just show the password on screen so you can copy and paste it. <strong>Password authentication is highly unrecommended</strong>.</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/hernandev/yoke">Yoke</a> is maintained by <a href="https://github.com/hernandev">hernandev</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
