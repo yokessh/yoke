@@ -15,6 +15,8 @@ With security in mind, all information about your servers is encrypted using **A
 
 ### Installation
 
+> .phar distribution may be available in the future.
+
 In order to use Yoke, you need PHP 5.5+ installed, with openssl extension enables (default on most installs)
 
 The installation process is based on the global composer packages, so you need to have a working composer install with the correct binary path settings. [Read this tutorial ](https://akrabat.com/global-installation-of-php-tools-with-composer/)
