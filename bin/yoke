@@ -5,7 +5,7 @@ Y_COMMAND=$1
 # Command argument.
 Y_ARGUMENT=$2
 # Path of phpyoke script.
-Y_PATH=bin/phpyoke
+Y_PATH=bin/yokephp
 # Path of active PHP.
 Y_PHP_PATH=$(which php)
 
