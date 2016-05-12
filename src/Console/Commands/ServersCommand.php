@@ -32,7 +32,7 @@ class ServersCommand extends BaseCommand
 
         // If there is no servers registered.
         if (!count($servers)) {
-            throw new NotFoundException("No servers available.");
+            throw new NotFoundException('No servers available.');
         // Otherwise.
         } else {
             // Render the servers table.
@@ -55,7 +55,7 @@ class ServersCommand extends BaseCommand
 
         // Loop on available connections to build the rows.
         $rows = [];
-        foreach($servers as $server) {
+        foreach ($servers as $server) {
             $rows[] = [$server->alias, $server->host, $server->user, $server->port, $server->authenticationMethod];
         }
 
