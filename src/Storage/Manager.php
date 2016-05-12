@@ -6,7 +6,7 @@ use Symfony\Component\Yaml\Dumper;
 use Symfony\Component\Yaml\Parser;
 
 /**
- * Class Manager
+ * Class Manager.
  *
  * Storage Manager provides a encrypted data storage using YAML files.
  */
@@ -41,12 +41,12 @@ class Manager
     protected function getOrGenerateKey()
     {
         // Generates a new key is none exists.
-        if (!$this->fileExists("encryption.key")) {
-            $this->storeFile("encryption.key", Encrypter::generateKey());
+        if (!$this->fileExists('encryption.key')) {
+            $this->storeFile('encryption.key', Encrypter::generateKey());
         }
 
         // Return the encryption key.
-        return trim($this->getContents("encryption.key"));
+        return trim($this->getContents('encryption.key'));
     }
 
     /**
@@ -54,6 +54,7 @@ class Manager
      * Defaults to servers.yml (the .yml extension should be omitted).
      *
      * @param string $type Configuration file name without .yml prefix.
+     *
      * @return array Decrypted configuration array.
      */
     public function getConfiguration($type = 'servers')
@@ -76,7 +77,7 @@ class Manager
     /**
      * Write a given array into a encrypted storage file.
      * 
-     * @param array $data The data to be stored.
+     * @param array  $data The data to be stored.
      * @param string $type The actual filename without the .yml extension to store the information.
      */
     public function writeConfiguration(array $data, $type = 'servers')
@@ -97,7 +98,7 @@ class Manager
      */
     public function basePath()
     {
-        return $_SERVER['HOME']."/.yoke";
+        return $_SERVER['HOME'].'/.yoke';
     }
 
     /**
@@ -112,7 +113,9 @@ class Manager
 
     /**
      * Get the full path for a relative filename.
+     *
      * @param null $file
+     *
      * @return string
      */
     protected function path($file = null)
@@ -122,7 +125,7 @@ class Manager
 
         // If a file name is provided, return it's full path.
         if ($file) {
-            return $this->basePath()."/".$file;
+            return $this->basePath().'/'.$file;
         }
 
         // Return the base path otherwise.
@@ -133,6 +136,7 @@ class Manager
      * Check for a file existence.
      * 
      * @param string $file Relative file name.
+     *
      * @return bool Exists or not.
      */
     protected function fileExists($file)
@@ -143,7 +147,7 @@ class Manager
     /**
      * Create or replace a given file with the given contents.
      * 
-     * @param string $name File name.
+     * @param string $name     File name.
      * @param string $contents File contents.
      */
     protected function storeFile($name, $contents)
@@ -155,6 +159,7 @@ class Manager
      * Reads a given file contents.
      * 
      * @param string $name Desired file.
+     *
      * @return string The file contents.
      */
     protected function getContents($name)

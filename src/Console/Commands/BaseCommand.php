@@ -31,7 +31,7 @@ abstract class BaseCommand extends Command
      * @var array Command arguments (if any).
      */
     protected $arguments = [];
-    
+
     /**
      * @var Manager Servers manager instance.
      */
@@ -55,10 +55,8 @@ abstract class BaseCommand extends Command
     /**
      * Main Command method, calls the fire command on it's child commands.
      *
-     * @param InputInterface $input Application provided input handler.
+     * @param InputInterface  $input  Application provided input handler.
      * @param OutputInterface $output Application provided output handler.
-     *
-     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -77,7 +75,7 @@ abstract class BaseCommand extends Command
     }
 
     /**
-     * Initialize the command for the console Application
+     * Initialize the command for the console Application.
      */
     protected function configure()
     {
@@ -103,7 +101,7 @@ abstract class BaseCommand extends Command
      * Some options are defined by convention, like formatting.
      * 
      * @param string $question The question being asked. 
-     * @param null $default Default value in case the user does not provide an answer.
+     * @param null   $default  Default value in case the user does not provide an answer.
      *
      * @return string The user input or the default value.
      */
@@ -123,12 +121,13 @@ abstract class BaseCommand extends Command
      * Any other input will return false.
      * 
      * @param string $question The question to be confirmed.
+     *
      * @return bool Confirmed or Not.
      */
     protected function askConfirmation($question)
     {
         // Creates a new confirmation instance using convention formatting.
-        $confirmQuestion = new ConfirmationQuestion($this->format("$question (Y/n)", 'question'), false) ;
+        $confirmQuestion = new ConfirmationQuestion($this->format("$question (Y/n)", 'question'), false);
 
         // Do ask the question and return the input.
         return $this->questionHelper->ask($this->input, $this->output, $confirmQuestion);
@@ -139,6 +138,7 @@ abstract class BaseCommand extends Command
      *
      * @param string $text The string to be formatted.
      * @param string $type Desired coloring type.
+     *
      * @return string The formatted string.
      */
     protected function format($text, $type = 'info')
@@ -149,7 +149,7 @@ abstract class BaseCommand extends Command
     /**
      * Write a string into the console output.
      *
-     * @param string $text The string to be displayed.
+     * @param string $text   The string to be displayed.
      * @param string $format The coloring format.
      */
     protected function writeln($text, $format = 'info')
@@ -213,6 +213,7 @@ abstract class BaseCommand extends Command
      * Gets the provided value to a given command argument.
      *
      * @param string $name Argument's name
+     *
      * @return mixed The user provided value.
      */
     protected function argument($name)

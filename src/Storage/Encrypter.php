@@ -27,6 +27,7 @@ class Encrypter
 
     /**
      * Encrypter constructor.
+     *
      * @param $key
      */
     public function __construct($key)
@@ -37,7 +38,8 @@ class Encrypter
     /**
      * Encrypt the given value.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function encrypt($value)
@@ -64,7 +66,7 @@ class Encrypter
         $json = json_encode(compact('iv', 'value', 'mac'));
 
         // Check for the encoded json string
-        if (! is_string($json)) {
+        if (!is_string($json)) {
             throw new \RuntimeException('Could not Encrypt the give value.');
         }
 
@@ -76,6 +78,7 @@ class Encrypter
      * Decrypt a given value.
      *
      * @param string $payload The encrypted payload
+     *
      * @return mixed The Decrypted value.
      */
     public function decrypt($payload)
@@ -113,14 +116,14 @@ class Encrypter
      * Decrypt a array of values.
      *
      * @param array $data Encrypted array payload.
+     *
      * @return array Decrypted array.
      */
     public function decryptArray(array $data)
     {
         $decryptedArray = [];
 
-        foreach($data as $key => $payload)
-        {
+        foreach ($data as $key => $payload) {
             $decryptedArray[$key] = $this->decrypt($payload);
         }
 
@@ -131,14 +134,14 @@ class Encrypter
      * Encrypt a given array.
      *
      * @param array $data Array to be encrypted.
+     *
      * @return array Encrypted array.
      */
     public function encryptArray(array $data)
     {
         $encryptedArray = [];
 
-        foreach($data as $key => $value)
-        {
+        foreach ($data as $key => $value) {
             $encryptedArray[$key] = $this->encrypt($value);
         }
 

@@ -26,7 +26,7 @@ class DeleteCommand extends BaseCommand
      */
     protected $arguments = [
         // Connection alias.
-        ['alias', InputArgument::REQUIRED, 'The connection to be removed.']
+        ['alias', InputArgument::REQUIRED, 'The connection to be removed.'],
     ];
 
     protected function fire()
@@ -37,7 +37,7 @@ class DeleteCommand extends BaseCommand
         $this->manager->getServer($alias);
 
         // Greetings.
-        $this->info("Server connection removal.");
+        $this->info('Server connection removal.');
 
         // Ask for confirmation.
         $confirmed = $this->askConfirmation("Are you sure about deleting the connection {$alias}:");
@@ -47,7 +47,7 @@ class DeleteCommand extends BaseCommand
             // Delete the connection.
             $this->manager->deleteServer($alias);
             // And congratulate.
-            $this->info("Server connection deleted successfully!");
+            $this->info('Server connection deleted successfully!');
         }
     }
 }

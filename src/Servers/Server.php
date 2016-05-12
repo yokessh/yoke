@@ -60,7 +60,7 @@ class Server
     public function __construct(array $config)
     {
         // For each config key
-        foreach($config as $key => $value) {
+        foreach ($config as $key => $value) {
             // Set into it's own attribute.
             $this->$key = $value;
         }
@@ -69,8 +69,8 @@ class Server
     /**
      * Magic __set method.
      *
-     * @param string $key Attribute name.
-     * @param mixed $value Attribute value
+     * @param string $key   Attribute name.
+     * @param mixed  $value Attribute value
      */
     public function __set($key, $value)
     {
@@ -80,7 +80,9 @@ class Server
 
     /**
      * Magic __get method.
+     *
      * @param string $key desired attribute.
+     *
      * @return mixed
      */
     public function __get($key)
@@ -93,7 +95,7 @@ class Server
      */
     protected function portParameter()
     {
-        return $this->port ? "-p{$this->port}" : "";
+        return $this->port ? "-p{$this->port}" : '';
     }
 
     /**
@@ -125,7 +127,7 @@ class Server
             return "-i{$this->privateKey}";
         }
 
-        return "";
+        return '';
     }
 
     /**
@@ -152,7 +154,7 @@ class Server
         if ($this->alias) {
             $configArray['alias'] = $this->alias;
         }
-        
+
         if ($this->host) {
             $configArray['host'] = $this->host;
         }
@@ -176,7 +178,7 @@ class Server
         if ($this->privateKey) {
             $configArray['privateKey'] = $this->privateKey;
         }
-        
+
         return $configArray;
     }
 }
