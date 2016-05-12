@@ -2,7 +2,15 @@
 <?php
 
 // Include composer auto-loader.
-require __DIR__.'/../vendor/autoload.php';
+$localPath = __DIR__.'/../vendor/autoload.php'; // Development Path
+$globalPath = __DIR__.'/../../../autoload.php'; // Global Path
+
+// Import the correct file
+if (file_exists($globalPath)) {
+    require $globalPath;
+} else {
+    require $localPath;
+}
 
 // Imports for shorter code.
 use Symfony\Component\Console\Application;
