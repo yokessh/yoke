@@ -21,7 +21,8 @@
     },
     "minimum-stability": "stable",
     "bin": [
-        "bin/yokephp"
+        "bin/yokephp",
+        "bin/yoke"
     ]
 
 }
