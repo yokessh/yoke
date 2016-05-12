@@ -1,0 +1,26 @@
+<?php
+
+// Include composer auto-loader.
+require __DIR__.'/../vendor/autoload.php';
+
+// Imports for shorter code.
+use Symfony\Component\Console\Application;
+use Yoke\Console\Commands\AddCommand;
+use Yoke\Console\Commands\ServersCommand;
+use Yoke\Console\Commands\ConnectCommand;
+use Yoke\Console\Commands\DeleteCommand;
+
+// Create a new console application instance.
+$yoke = new Application();
+
+// Set the application name.
+$yoke->setName('Yoke: SSH Connection Manager');
+
+// Add Yoke commands.
+$yoke->add(new AddCommand());
+$yoke->add(new ServersCommand());
+$yoke->add(new ConnectCommand());
+$yoke->add(new DeleteCommand());
+
+// Run the application.
+$yoke->run();

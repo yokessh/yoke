@@ -1,0 +1,27 @@
+{
+    "name": "hernandev/yoke",
+    "description": "Yoke: SSH Connection Manager/Wallet",
+    "keywords": ["ssh", "manager", "wallet"],
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Diego Hernandes",
+            "email": "diego@hernandev.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^3.0",
+        "symfony/yaml": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yoke\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "bin": [
+        "bin/yokephp"
+    ]
+
+}
