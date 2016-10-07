@@ -32,7 +32,10 @@ class AddCommand extends BaseCommand
         $serverData['user'] = $this->ask('Server username (none):');
         $serverData['host'] = $this->ask('Server hostname or IP Address (192.168.0.1):', '192.168.0.1');
         $serverData['port'] = $this->ask('Server Port (22):', 22);
-        $serverData['authenticationMethod'] = $this->ask('Authentication Method:[system|key|password] (system):', 'system');
+        $serverData['authenticationMethod'] = $this->ask(
+            'Authentication Method:[system|key|password] (system):',
+            'system'
+        );
 
         if ($serverData['authenticationMethod'] == 'key') {
             // Ask for private key if key was selected as authentication method.
