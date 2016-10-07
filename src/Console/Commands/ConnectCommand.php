@@ -3,6 +3,7 @@
 namespace Yoke\Console\Commands;
 
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 
 class ConnectCommand extends BaseCommand
 {
@@ -26,8 +27,10 @@ class ConnectCommand extends BaseCommand
 
     /**
      * Execute the command.
+     *
+     * @param InputInterface $input
      */
-    protected function fire()
+    protected function fire(InputInterface $input)
     {
         // Gets the desired connection alias.
         $alias = $this->argument('alias');

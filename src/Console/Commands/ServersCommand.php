@@ -3,6 +3,7 @@
 namespace Yoke\Console\Commands;
 
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputInterface;
 use Yoke\Servers\Exceptions\NotFoundException;
 
 /**
@@ -24,8 +25,10 @@ class ServersCommand extends BaseCommand
 
     /**
      * Execute the command.
+     *
+     * @param InputInterface $input
      */
-    protected function fire()
+    protected function fire(InputInterface $input)
     {
         // Get the available servers.
         $servers = $this->manager->getServers();

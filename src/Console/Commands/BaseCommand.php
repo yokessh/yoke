@@ -57,6 +57,8 @@ abstract class BaseCommand extends Command
      *
      * @param InputInterface $input Application provided input handler.
      * @param OutputInterface $output Application provided output handler.
+     *
+     * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -71,7 +73,7 @@ abstract class BaseCommand extends Command
         $this->manager = new Manager();
 
         // Call the child command fire() method.
-        $this->fire();
+        return $this->fire($input);
     }
 
     /**
@@ -93,8 +95,12 @@ abstract class BaseCommand extends Command
 
     /**
      * Abstract fire method to be implemented on child commands.
+     *
+     * @param InputInterface $input
+     *
+     * @return
      */
-    abstract protected function fire();
+    abstract protected function fire(InputInterface $input);
 
     /**
      * Abstracts the question process into a single method.
