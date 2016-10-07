@@ -69,8 +69,8 @@ class Server
     /**
      * Magic __set method.
      *
-     * @param string $key   Attribute name.
-     * @param mixed  $value Attribute value
+     * @param string $key Attribute name.
+     * @param mixed $value Attribute value
      */
     public function __set($key, $value)
     {
