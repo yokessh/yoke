@@ -76,8 +76,8 @@ class Manager
 
     /**
      * Write a given array into a encrypted storage file.
-     * 
-     * @param array  $data The data to be stored.
+     *
+     * @param array $data The data to be stored.
      * @param string $type The actual filename without the .yml extension to store the information.
      */
     public function writeConfiguration(array $data, $type = 'servers')
@@ -134,7 +134,7 @@ class Manager
 
     /**
      * Check for a file existence.
-     * 
+     *
      * @param string $file Relative file name.
      *
      * @return bool Exists or not.
@@ -146,8 +146,8 @@ class Manager
 
     /**
      * Create or replace a given file with the given contents.
-     * 
-     * @param string $name     File name.
+     *
+     * @param string $name File name.
      * @param string $contents File contents.
      */
     protected function storeFile($name, $contents)
@@ -157,7 +157,7 @@ class Manager
 
     /**
      * Reads a given file contents.
-     * 
+     *
      * @param string $name Desired file.
      *
      * @return string The file contents.

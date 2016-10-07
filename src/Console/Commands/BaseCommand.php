@@ -55,7 +55,7 @@ abstract class BaseCommand extends Command
     /**
      * Main Command method, calls the fire command on it's child commands.
      *
-     * @param InputInterface  $input  Application provided input handler.
+     * @param InputInterface $input Application provided input handler.
      * @param OutputInterface $output Application provided output handler.
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -99,9 +99,9 @@ abstract class BaseCommand extends Command
     /**
      * Abstracts the question process into a single method.
      * Some options are defined by convention, like formatting.
-     * 
-     * @param string $question The question being asked. 
-     * @param null   $default  Default value in case the user does not provide an answer.
+     *
+     * @param string $question The question being asked.
+     * @param null $default Default value in case the user does not provide an answer.
      *
      * @return string The user input or the default value.
      */
@@ -116,10 +116,10 @@ abstract class BaseCommand extends Command
 
     /**
      * Asks a Confirmation (Yes/No) Question.
-     * 
+     *
      * Inputs like Y, Yes will make this method return true.
      * Any other input will return false.
-     * 
+     *
      * @param string $question The question to be confirmed.
      *
      * @return bool Confirmed or Not.
@@ -149,7 +149,7 @@ abstract class BaseCommand extends Command
     /**
      * Write a string into the console output.
      *
-     * @param string $text   The string to be displayed.
+     * @param string $text The string to be displayed.
      * @param string $format The coloring format.
      */
     protected function writeln($text, $format = 'info')
@@ -160,7 +160,7 @@ abstract class BaseCommand extends Command
 
     /**
      * Write a not formatted string into the console output.
-     * 
+     *
      * @param string $text The string to be displayed.
      */
     protected function writelnPlain($text)

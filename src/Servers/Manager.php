@@ -7,7 +7,7 @@ use Yoke\Storage\Manager as StorageManager;
 
 /**
  * Class Manager.
- * 
+ *
  * Server connections manager.
  */
 class Manager
@@ -50,22 +50,22 @@ class Manager
 
     /**
      * Register a configuration array as a server instance.
-     * 
+     *
      * @param array $data Server connection information.
      */
     public function registerServer(array $data)
     {
-        // Generate a new server connection instance. 
+        // Generate a new server connection instance.
         $server = new Server($data);
 
-        // Register the server connection into the servers list. 
+        // Register the server connection into the servers list.
         $this->servers[$server->alias] = $server;
     }
 
     /**
      * Create a server connection instance with the provided configuration
      * data and write the configuration server with the updated information.
-     * 
+     *
      * @param array $data Server connection information.
      */
     public function createServer(array $data)
@@ -79,7 +79,7 @@ class Manager
 
     /**
      * Deletes a server connection from instance and storage.
-     * 
+     *
      * @param string $alias Alias of the server connection to be deleted.
      */
     public function deleteServer($alias)
@@ -111,7 +111,7 @@ class Manager
 
     /**
      * Get a server instance.
-     * 
+     *
      * @param string $alias Server connection alias.
      *
      * @return Server The Server connection instance.
@@ -129,7 +129,7 @@ class Manager
 
     /**
      * Get all the server connection instances.
-     * 
+     *
      * @return array A array containing all the server connection instances.
      */
     public function getServers()
@@ -139,8 +139,8 @@ class Manager
 
     /**
      * Is a given connection alias registered?
-     * 
-     * @param string $alias The given server connection instance alias. 
+     *
+     * @param string $alias The given server connection instance alias.
      *
      * @return bool Registered or not.
      */
