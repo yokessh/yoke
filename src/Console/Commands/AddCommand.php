@@ -1,6 +1,8 @@
 <?php
 
 namespace Yoke\Console\Commands;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * Class AddCommand.
@@ -19,20 +21,32 @@ class AddCommand extends BaseCommand
      */
     protected $description = 'Store a new connection configuration.';
 
+    protected $arguments = [
+        ['alias', InputArgument::OPTIONAL, 'Connection Alias'],
+    ];
+
     /**
      * Execute the command.
+     *
+     * @param InputInterface $input
      */
-    protected function fire()
+    protected function fire(InputInterface $input)
     {
         // Greetings.
         $this->info('Registering a new Server Configuration!');
 
         // Read initial connection data.
-        $serverData['alias'] = $this->ask('Server connection alias (server1):', 'server1');
+        if (!$serverData['alias'] = $input->getArgument('alias')) {
+            $serverData['alias'] = $this->ask('Server connection alias (server1):', 'server1');
+        }
+
         $serverData['user'] = $this->ask('Server username (none):');
         $serverData['host'] = $this->ask('Server hostname or IP Address (192.168.0.1):', '192.168.0.1');
         $serverData['port'] = $this->ask('Server Port (22):', 22);
-        $serverData['authenticationMethod'] = $this->ask('Authentication Method:[system|key|password] (system):', 'system');
+        $serverData['authenticationMethod'] = $this->ask(
+            'Authentication Method:[system|key|password] (system):',
+            'system'
+        );
 
         if ($serverData['authenticationMethod'] == 'key') {
             // Ask for private key if key was selected as authentication method.

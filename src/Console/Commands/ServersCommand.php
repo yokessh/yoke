@@ -3,6 +3,7 @@
 namespace Yoke\Console\Commands;
 
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputInterface;
 use Yoke\Servers\Exceptions\NotFoundException;
 
 /**
@@ -24,8 +25,10 @@ class ServersCommand extends BaseCommand
 
     /**
      * Execute the command.
+     *
+     * @param InputInterface $input
      */
-    protected function fire()
+    protected function fire(InputInterface $input)
     {
         // Get the available servers.
         $servers = $this->manager->getServers();
@@ -33,7 +36,7 @@ class ServersCommand extends BaseCommand
         // If there is no servers registered.
         if (!count($servers)) {
             throw new NotFoundException('No servers available.');
-        // Otherwise.
+            // Otherwise.
         } else {
             // Render the servers table.
             $this->serversTable($servers);
@@ -55,6 +58,7 @@ class ServersCommand extends BaseCommand
 
         // Loop on available connections to build the rows.
         $rows = [];
+
         foreach ($servers as $server) {
             $rows[] = [$server->alias, $server->host, $server->user, $server->port, $server->authenticationMethod];
         }
