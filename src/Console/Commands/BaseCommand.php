@@ -20,37 +20,37 @@ abstract class BaseCommand extends Command
     /**
      * @var string Command name.
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @var string Command description.
      */
-    protected $description;
+    protected string $description;
 
     /**
      * @var array Command arguments (if any).
      */
-    protected $arguments = [];
+    protected array $arguments = [];
 
     /**
      * @var Manager Servers manager instance.
      */
-    protected $manager;
+    protected Manager $manager;
 
     /**
      * @var InputInterface Input handling.
      */
-    protected $input;
+    protected InputInterface $input;
 
     /**
      * @var OutputInterface Output handling.
      */
-    protected $output;
+    protected OutputInterface $output;
 
     /**
      * @var QuestionHelper Console helper for questions and confirmations.
      */
-    protected $questionHelper;
+    protected QuestionHelper $questionHelper;
 
     /**
      * Main Command method, calls the fire command on it's child commands.
@@ -65,27 +65,29 @@ abstract class BaseCommand extends Command
         // Assign input and output streams.
         $this->input = $input;
         $this->output = $output;
-
         // Assign the QuestionHelper instance.
         $this->questionHelper = $this->getHelper('question');
-
         // Created and assign a new Servers Manager instance.
         $this->manager = new Manager();
 
         // Call the child command fire() method.
-        return $this->fire($input);
+        $this->fire($input);
     }
 
     /**
      * Initialize the command for the console Application.
      */
-    protected function configure()
+    protected function configure(): void
     {
         // Configure the command name.
         $this->setName($this->name);
-
         // Configure the command description.
         $this->setDescription($this->description);
+
+        $alias = strtolower($this->name[0]);
+
+        // Configure single letter alias for the command.
+        $this->setAliases([$alias]);
 
         // Loop through arguments and register them.
         foreach ($this->arguments as $argument) {
@@ -97,10 +99,8 @@ abstract class BaseCommand extends Command
      * Abstract fire method to be implemented on child commands.
      *
      * @param InputInterface $input
-     *
-     * @return
      */
-    abstract protected function fire(InputInterface $input);
+    abstract protected function fire(InputInterface $input): void;
 
     /**
      * Abstracts the question process into a single method.
@@ -111,7 +111,7 @@ abstract class BaseCommand extends Command
      *
      * @return string The user input or the default value.
      */
-    protected function ask($question, $default = null)
+    protected function ask($question, $default = null): string
     {
         // Creates a new question instance, using the convention formatting.
         $askQuestion = new Question($this->format($question, 'question'), $default);
@@ -130,7 +130,7 @@ abstract class BaseCommand extends Command
      *
      * @return bool Confirmed or Not.
      */
-    protected function askConfirmation($question)
+    protected function askConfirmation($question): bool
     {
         // Creates a new confirmation instance using convention formatting.
         $confirmQuestion = new ConfirmationQuestion($this->format("$question (Y/n)", 'question'), false);
@@ -147,7 +147,7 @@ abstract class BaseCommand extends Command
      *
      * @return string The formatted string.
      */
-    protected function format($text, $type = 'info')
+    protected function format($text, $type = 'info'): string
     {
         return "\n<{$type}>{$text}</{$type}> ";
     }
@@ -158,7 +158,7 @@ abstract class BaseCommand extends Command
      * @param string $text The string to be displayed.
      * @param string $format The coloring format.
      */
-    protected function writeln($text, $format = 'info')
+    protected function writeln($text, $format = 'info'): void
     {
         // Uses output handler to write the formatted string.
         $this->output->writeln($this->format($text, $format));
@@ -169,7 +169,7 @@ abstract class BaseCommand extends Command
      *
      * @param string $text The string to be displayed.
      */
-    protected function writelnPlain($text)
+    protected function writelnPlain($text): void
     {
         // Uses output handler to write the formatted string.
         $this->output->writeln($text);
@@ -180,7 +180,7 @@ abstract class BaseCommand extends Command
      *
      * @param string $text The string to be displayed.
      */
-    protected function question($text)
+    protected function question($text): void
     {
         $this->writeln($text, 'question');
     }
@@ -190,7 +190,7 @@ abstract class BaseCommand extends Command
      *
      * @param string $text The string to be displayed.
      */
-    protected function info($text)
+    protected function info($text): void
     {
         $this->writeln($text, 'info');
     }
@@ -200,7 +200,7 @@ abstract class BaseCommand extends Command
      *
      * @param string $text The string to be displayed.
      */
-    protected function comment($text)
+    protected function comment($text): void
     {
         $this->writeln($text, 'comment');
     }
@@ -210,7 +210,7 @@ abstract class BaseCommand extends Command
      *
      * @param string $text The string to be displayed.
      */
-    protected function error($text)
+    protected function error($text): void
     {
         $this->writeln($text, 'error');
     }

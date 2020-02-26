@@ -20,37 +20,37 @@ class Server
     /**
      * @var string Connection alias.
      */
-    protected $alias;
+    protected string $alias;
 
     /**
      * @var string Server hostname or IP Address.
      */
-    protected $host;
+    protected string $host;
 
     /**
      * @var int TCP Connection port.
      */
-    protected $port = 22;
+    protected int $port = 22;
 
     /**
      * @var string Server username.
      */
-    protected $user;
+    protected string $user;
 
     /**
      * @var string Authentication method (key|password|system).
      */
-    protected $authenticationMethod = 'password';
+    protected string $authenticationMethod = 'password';
 
     /**
      * @var string Connection password.
      */
-    protected $password;
+    protected string $password;
 
     /**
      * @var string Connection private key.
      */
-    protected $privateKey;
+    protected string $privateKey;
 
     /**
      * Server constructor.
@@ -93,7 +93,7 @@ class Server
     /**
      * @return string The port portion of the shh connection string.
      */
-    protected function portParameter()
+    protected function portParameter(): string
     {
         return $this->port ? "-p{$this->port}" : '';
     }
@@ -101,7 +101,7 @@ class Server
     /**
      * @return string The password helper line.
      */
-    protected function passwordHelper()
+    protected function passwordHelper(): string
     {
         return "Password: {$this->password}";
     }
@@ -109,7 +109,7 @@ class Server
     /**
      * @return string User and hostname portion of the ssh connection string.
      */
-    protected function userAndHostParameter()
+    protected function userAndHostParameter(): string
     {
         if ($this->user) {
             return "{$this->user}@{$this->host}";
@@ -121,9 +121,9 @@ class Server
     /**
      * @return string Private key portion of the connection string.
      */
-    protected function keyParameter()
+    protected function keyParameter(): string
     {
-        if ($this->authenticationMethod == 'key') {
+        if ('key' === $this->authenticationMethod) {
             return "-i{$this->privateKey}";
         }
 
@@ -133,12 +133,12 @@ class Server
     /**
      * @return string The final ssh connection string.
      */
-    public function connectionString()
+    public function connectionString(): string
     {
         $connectionString = "ssh {$this->keyParameter()} {$this->portParameter()} {$this->userAndHostParameter()}";
 
-        if ($this->authenticationMethod == 'password') {
-            $connectionString = $this->passwordHelper()."\n".$connectionString;
+        if ('password' === $this->authenticationMethod) {
+            $connectionString = $this->passwordHelper() . "\n" . $connectionString;
         }
 
         return $connectionString;
@@ -147,7 +147,7 @@ class Server
     /**
      * @return array Array encoded representation of the server connection.
      */
-    public function toArray()
+    public function toArray(): array
     {
         $configArray = [];
 
