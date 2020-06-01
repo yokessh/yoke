@@ -2,16 +2,15 @@
 
 namespace Yoke\Servers\Exceptions;
 
-use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * Class NotFoundException.
  *
- * Exception when a given resource is not found or there are no resources into a 
+ * Exception when a given resource is not found or there are no resources into a
  * given collection.
  */
-class NotFoundException extends RuntimeException implements ExceptionInterface
+class NotFoundException extends RuntimeException
 {
     //
 }

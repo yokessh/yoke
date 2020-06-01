@@ -1,8 +1,9 @@
 <?php
 
 namespace Yoke\Console\Commands;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
+
+use Exception;
+use Symfony\Component\Console\Input\{InputArgument, InputInterface};
 
 /**
  * Class AddCommand.
@@ -14,14 +15,14 @@ class AddCommand extends BaseCommand
     /**
      * @var string Command name.
      */
-    protected $name = 'add';
+    protected string $name = 'add';
 
     /**
      * @var string Command description.
      */
-    protected $description = 'Store a new connection configuration.';
+    protected string $description = 'Store a new connection configuration.';
 
-    protected $arguments = [
+    protected array $arguments = [
         ['alias', InputArgument::OPTIONAL, 'Connection Alias'],
     ];
 
@@ -29,8 +30,10 @@ class AddCommand extends BaseCommand
      * Execute the command.
      *
      * @param InputInterface $input
+     *
+     * @throws Exception
      */
-    protected function fire(InputInterface $input)
+    protected function fire(InputInterface $input): void
     {
         // Greetings.
         $this->info('Registering a new Server Configuration!');
@@ -48,14 +51,14 @@ class AddCommand extends BaseCommand
             'system'
         );
 
-        if ($serverData['authenticationMethod'] == 'key') {
+        if ('key' === $serverData['authenticationMethod']) {
             // Ask for private key if key was selected as authentication method.
-            $serverData['privateKey'] = $this->ask('Private Key (~/.ssh/id_rsa):', $_SERVER['HOME'].'/.ssh/id_rsa');
-        } elseif ($serverData['authenticationMethod'] == 'password') {
+            $serverData['privateKey'] = $this->ask('Private Key (~/.ssh/id_rsa):', $_SERVER['HOME'] . '/.ssh/id_rsa');
+        }
+
+        if ('password' === $serverData['authenticationMethod']) {
             // Ask for password if password as selected as authentication method.
             $serverData['password'] = $this->ask('Password:');
-        } else {
-            // don't store anything when system is selected.
         }
 
         // Register the server connection data into servers manager.

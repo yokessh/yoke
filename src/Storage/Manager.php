@@ -2,8 +2,8 @@
 
 namespace Yoke\Storage;
 
-use Symfony\Component\Yaml\Dumper;
-use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\{Dumper, Parser};
+use Exception;
 
 /**
  * Class Manager.
@@ -15,10 +15,12 @@ class Manager
     /**
      * @var Encrypter
      */
-    protected $encrypter;
+    protected Encrypter $encrypter;
 
     /**
      * Manager constructor.
+     *
+     * @throws Exception
      */
     public function __construct()
     {
@@ -37,8 +39,10 @@ class Manager
      * decryption.
      *
      * @return string The encryption key.
+     *
+     * @throws Exception
      */
-    protected function getOrGenerateKey()
+    protected function getOrGenerateKey(): string
     {
         // Generates a new key is none exists.
         if (!$this->fileExists('encryption.key')) {
@@ -57,7 +61,7 @@ class Manager
      *
      * @return array Decrypted configuration array.
      */
-    public function getConfiguration($type = 'servers')
+    public function getConfiguration($type = 'servers'): array
     {
         // If the requested configuration file exists.
         if ($this->fileExists("{$type}.yml")) {
@@ -79,8 +83,10 @@ class Manager
      *
      * @param array $data The data to be stored.
      * @param string $type The actual filename without the .yml extension to store the information.
+     *
+     * @throws Exception
      */
-    public function writeConfiguration(array $data, $type = 'servers')
+    public function writeConfiguration(array $data, $type = 'servers'): void
     {
         // Encrypt the configuration array
         $encryptedArray = $this->encrypter->encryptArray($data);
@@ -96,15 +102,15 @@ class Manager
     /**
      * @return string The storage base path.
      */
-    public function basePath()
+    public function basePath(): string
     {
-        return $_SERVER['HOME'].'/.yoke';
+        return $_SERVER['HOME'] . '/.yoke';
     }
 
     /**
      * Prepare the storage path in case the directory don't already exists.
      */
-    protected function prepareBasePath()
+    protected function prepareBasePath(): void
     {
         if (!is_dir($this->basePath())) {
             mkdir($this->basePath());
@@ -118,14 +124,14 @@ class Manager
      *
      * @return string
      */
-    protected function path($file = null)
+    protected function path($file = null): string
     {
         // Check if the folder exists, create if don't.
         $this->prepareBasePath();
 
         // If a file name is provided, return it's full path.
         if ($file) {
-            return $this->basePath().'/'.$file;
+            return $this->basePath() . '/' . $file;
         }
 
         // Return the base path otherwise.
@@ -139,7 +145,7 @@ class Manager
      *
      * @return bool Exists or not.
      */
-    protected function fileExists($file)
+    protected function fileExists($file): bool
     {
         return file_exists($this->path($file));
     }
@@ -150,7 +156,7 @@ class Manager
      * @param string $name File name.
      * @param string $contents File contents.
      */
-    protected function storeFile($name, $contents)
+    protected function storeFile($name, $contents): void
     {
         file_put_contents($this->path($name), $contents);
     }
@@ -162,7 +168,7 @@ class Manager
      *
      * @return string The file contents.
      */
-    protected function getContents($name)
+    protected function getContents($name): string
     {
         return file_get_contents($this->path($name));
     }

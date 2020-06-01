@@ -16,19 +16,19 @@ class ServersCommand extends BaseCommand
     /**
      * @var string Command name.
      */
-    protected $name = 'servers';
+    protected string $name = 'servers';
 
     /**
      * @var string Command description.
      */
-    protected $description = 'List the available servers.';
+    protected string $description = 'List the available servers.';
 
     /**
      * Execute the command.
      *
      * @param InputInterface $input
      */
-    protected function fire(InputInterface $input)
+    protected function fire(InputInterface $input): void
     {
         // Get the available servers.
         $servers = $this->manager->getServers();
@@ -37,10 +37,10 @@ class ServersCommand extends BaseCommand
         if (!count($servers)) {
             throw new NotFoundException('No servers available.');
             // Otherwise.
-        } else {
-            // Render the servers table.
-            $this->serversTable($servers);
         }
+
+        // Render the servers table.
+        $this->serversTable($servers);
     }
 
     /**
@@ -48,11 +48,10 @@ class ServersCommand extends BaseCommand
      *
      * @param array $servers
      */
-    protected function serversTable(array $servers)
+    protected function serversTable(array $servers): void
     {
         // New table instance.
         $table = new Table($this->output);
-
         // Set table headers.
         $table->setHeaders(['Name', 'Host', 'Username', 'Port', 'Auth. Method']);
 
@@ -65,7 +64,6 @@ class ServersCommand extends BaseCommand
 
         // Set the table rows
         $table->setRows($rows);
-
         // Render the table.
         $table->render();
     }

@@ -2,6 +2,7 @@
 
 namespace Yoke\Servers;
 
+use Exception;
 use Yoke\Servers\Exceptions\NotFoundException;
 use Yoke\Storage\Manager as StorageManager;
 
@@ -15,12 +16,12 @@ class Manager
     /**
      * @var StorageManager Storage handling.
      */
-    protected $storageManager;
+    protected StorageManager $storageManager;
 
     /**
      * @var array List of store server connections.
      */
-    protected $servers = [];
+    protected array $servers = [];
 
     /**
      * Manager constructor.
@@ -37,7 +38,7 @@ class Manager
     /**
      * Load the stored servers.
      */
-    protected function loadServers()
+    protected function loadServers(): void
     {
         // Get the servers configuration array from the servers.yml file.
         $servers = $this->storageManager->getConfiguration('servers');
@@ -53,7 +54,7 @@ class Manager
      *
      * @param array $data Server connection information.
      */
-    public function registerServer(array $data)
+    public function registerServer(array $data): void
     {
         // Generate a new server connection instance.
         $server = new Server($data);
@@ -67,12 +68,13 @@ class Manager
      * data and write the configuration server with the updated information.
      *
      * @param array $data Server connection information.
+     *
+     * @throws Exception
      */
-    public function createServer(array $data)
+    public function createServer(array $data): void
     {
         // Register a new server connection instance.
         $this->registerServer($data);
-
         // Write the configuration server with the updated information
         $this->writeServers();
     }
@@ -81,8 +83,10 @@ class Manager
      * Deletes a server connection from instance and storage.
      *
      * @param string $alias Alias of the server connection to be deleted.
+     *
+     * @throws Exception
      */
-    public function deleteServer($alias)
+    public function deleteServer($alias): void
     {
         // Find the server.
         $server = $this->getServer($alias);
@@ -96,10 +100,13 @@ class Manager
 
     /**
      * Write the current server instances into a servers.yml storage file.
+     *
+     * @throws Exception
      */
-    protected function writeServers()
+    protected function writeServers(): void
     {
         $servers = [];
+
         // Parse all current instances into the array representation.
         foreach ($this->servers as $server) {
             $servers[] = $server->toArray();
@@ -118,13 +125,13 @@ class Manager
      *
      * @throws NotFoundException When the desired alias is not registered.
      */
-    public function getServer($alias)
+    public function getServer($alias): ?Server
     {
         if ($this->serverExists($alias)) {
             return $this->servers[$alias];
-        } else {
-            throw new NotFoundException('Server not found.');
         }
+
+        throw new NotFoundException('Server not found.');
     }
 
     /**
@@ -132,7 +139,7 @@ class Manager
      *
      * @return array A array containing all the server connection instances.
      */
-    public function getServers()
+    public function getServers(): array
     {
         return $this->servers;
     }
@@ -144,7 +151,7 @@ class Manager
      *
      * @return bool Registered or not.
      */
-    public function serverExists($alias)
+    public function serverExists($alias): bool
     {
         return array_key_exists($alias, $this->servers);
     }

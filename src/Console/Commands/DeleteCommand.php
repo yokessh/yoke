@@ -2,8 +2,8 @@
 
 namespace Yoke\Console\Commands;
 
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
+use Exception;
+use Symfony\Component\Console\Input\{InputArgument, InputInterface};
 
 /**
  * Class DeleteCommand.
@@ -15,17 +15,17 @@ class DeleteCommand extends BaseCommand
     /**
      * @var string Command name.
      */
-    protected $name = 'delete';
+    protected string $name = 'delete';
 
     /**
      * @var string Command description.
      */
-    protected $description = 'Remove a connection configuration.';
+    protected string $description = 'Remove a connection configuration.';
 
     /**
      * @var array Command arguments.
      */
-    protected $arguments = [
+    protected array $arguments = [
         // Connection alias.
         ['alias', InputArgument::REQUIRED, 'The connection to be removed.'],
     ];
@@ -34,14 +34,16 @@ class DeleteCommand extends BaseCommand
      * Execute the command.
      *
      * @param InputInterface $input
+     *
+     * @throws Exception
      */
-    protected function fire(InputInterface $input)
+    protected function fire(InputInterface $input): void
     {
         // Find the server.
         $alias = $this->argument('alias');
+
         // Ensure server exists.
         $this->manager->getServer($alias);
-
         // Greetings.
         $this->info('Server connection removal.');
 

@@ -1,7 +1,11 @@
 {
     "name": "hernandev/yoke",
     "description": "Yoke: SSH Connection Manager/Wallet",
-    "keywords": ["ssh", "manager", "wallet"],
+    "keywords": [
+        "ssh",
+        "manager",
+        "wallet"
+    ],
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -11,8 +15,15 @@
         }
     ],
     "require": {
-        "symfony/console": "^3.0",
-        "symfony/yaml": "^3.0"
+        "php": "^7.4",
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "symfony/console": "^4",
+        "symfony/yaml": "^4",
+        "symfony/process": "^5.0"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -24,5 +35,4 @@
         "bin/yokephp",
         "bin/yoke"
     ]
-
 }

@@ -2,6 +2,12 @@
 
 namespace Yoke\Storage;
 
+use Exception;
+use RuntimeException;
+
+use function openssl_decrypt;
+use function openssl_encrypt;
+
 /**
  * Class Encrypter.
  *
@@ -13,17 +19,17 @@ class Encrypter
     /**
      * @var string Encryption cipher
      */
-    protected $cipher = 'AES-256-CBC';
+    protected string $cipher = 'AES-256-CBC';
 
     /**
      * @var int IV Size
      */
-    protected $iv_size = 16;
+    protected int $iv_size = 16;
 
     /**
      * @var string Encryption key
      */
-    protected $key;
+    protected string $key;
 
     /**
      * Encrypter constructor.
@@ -41,33 +47,32 @@ class Encrypter
      * @param string $value
      *
      * @return string
+     *
+     * @throws Exception
      */
-    public function encrypt($value)
+    public function encrypt($value): string
     {
         // Generate a IV.
         $iv = random_bytes($this->iv_size);
-
         // Encrypt the value.
-        $value = \openssl_encrypt(serialize($value), $this->cipher, $this->key, 0, $iv);
+        $value = openssl_encrypt(serialize($value), $this->cipher, $this->key, 0, $iv);
 
         // If the value was not encrypted successfully.
         if ($value === false) {
             // Throw a exception.
-            throw new \RuntimeException('Could not Encrypt the give value.');
+            throw new RuntimeException('Could not Encrypt the give value.');
         }
 
         // Calculate the HMAC.
-        $mac = hash_hmac('sha256', $iv.$value, $this->key);
-
+        $mac = hash_hmac('sha256', $iv . $value, $this->key);
         // Encode IV into encodable format.
         $iv = base64_encode($iv);
-
         // Encode the IV, Value and HMAV into a JSON Payload that will be stored.
-        $json = json_encode(compact('iv', 'value', 'mac'));
+        $json = json_encode(compact('iv', 'value', 'mac'), JSON_THROW_ON_ERROR);
 
         // Check for the encoded json string
         if (!is_string($json)) {
-            throw new \RuntimeException('Could not Encrypt the give value.');
+            throw new RuntimeException('Could not Encrypt the give value.');
         }
 
         // return the encrypted and encoded payload
@@ -84,18 +89,16 @@ class Encrypter
     public function decrypt($payload)
     {
         // Decode the json payload into a array.
-        $payload = json_decode(base64_decode($payload), true);
-
+        $payload = json_decode(base64_decode($payload), true, 512, JSON_THROW_ON_ERROR);
         // Get the IV from the payload.
         $iv = base64_decode($payload['iv']);
-
         // Decrypt the value using the key and IV
-        $decrypted = \openssl_decrypt($payload['value'], $this->cipher, $this->key, 0, $iv);
+        $decrypted = openssl_decrypt($payload['value'], $this->cipher, $this->key, 0, $iv);
 
         // If the value was not correctly encrypted
         if ($decrypted === false) {
             // Throw an exception
-            throw new \RuntimeException('Could not decrypt the given payload.');
+            throw new RuntimeException('Could not decrypt the given payload.');
         }
 
         // return the decrypted value.
@@ -106,8 +109,10 @@ class Encrypter
      * Static Key generation method.
      *
      * @return string A random encryption key.
+     *
+     * @throws Exception
      */
-    public static function generateKey()
+    public static function generateKey(): string
     {
         return base64_encode(random_bytes(32));
     }
@@ -119,7 +124,7 @@ class Encrypter
      *
      * @return array Decrypted array.
      */
-    public function decryptArray(array $data)
+    public function decryptArray(array $data): array
     {
         $decryptedArray = [];
 
@@ -136,8 +141,10 @@ class Encrypter
      * @param array $data Array to be encrypted.
      *
      * @return array Encrypted array.
+     *
+     * @throws Exception
      */
-    public function encryptArray(array $data)
+    public function encryptArray(array $data): array
     {
         $encryptedArray = [];
 
