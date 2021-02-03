@@ -12,16 +12,12 @@ use Symfony\Component\Console\Input\{InputArgument, InputInterface};
  */
 class AddCommand extends BaseCommand
 {
-    /**
-     * @var string Command name.
-     */
+    /** @var string Command name. */
     protected string $name = 'add';
-
-    /**
-     * @var string Command description.
-     */
+    /** @var string Command description. */
     protected string $description = 'Store a new connection configuration.';
 
+    /** @var array|array[] Command arguments. */
     protected array $arguments = [
         ['alias', InputArgument::OPTIONAL, 'Connection Alias'],
     ];
@@ -53,7 +49,7 @@ class AddCommand extends BaseCommand
 
         if ('key' === $serverData['authenticationMethod']) {
             // Ask for private key if key was selected as authentication method.
-            $serverData['privateKey'] = $this->ask('Private Key (~/.ssh/id_rsa):', $_SERVER['HOME'] . '/.ssh/id_rsa');
+            $serverData['privateKey'] = $this->ask('Private Key (~/.ssh/id_rsa):', "{$_SERVER['HOME']}/.ssh/id_rsa");
         }
 
         if ('password' === $serverData['authenticationMethod']) {

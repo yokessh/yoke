@@ -3,6 +3,7 @@
 namespace Yoke\Storage;
 
 use Exception;
+use JsonException;
 use RuntimeException;
 
 use function openssl_decrypt;
@@ -16,19 +17,11 @@ use function openssl_encrypt;
  */
 class Encrypter
 {
-    /**
-     * @var string Encryption cipher
-     */
+    /** @var string Encryption cipher */
     protected string $cipher = 'AES-256-CBC';
-
-    /**
-     * @var int IV Size
-     */
-    protected int $iv_size = 16;
-
-    /**
-     * @var string Encryption key
-     */
+    /** @var int IV Size */
+    protected int $ivSize = 16;
+    /** @var string Encryption key */
     protected string $key;
 
     /**
@@ -50,10 +43,10 @@ class Encrypter
      *
      * @throws Exception
      */
-    public function encrypt($value): string
+    public function encrypt(string $value): string
     {
         // Generate a IV.
-        $iv = random_bytes($this->iv_size);
+        $iv = random_bytes($this->ivSize);
         // Encrypt the value.
         $value = openssl_encrypt(serialize($value), $this->cipher, $this->key, 0, $iv);
 
@@ -85,8 +78,10 @@ class Encrypter
      * @param string $payload The encrypted payload
      *
      * @return mixed The Decrypted value.
+     *
+     * @throws JsonException
      */
-    public function decrypt($payload)
+    public function decrypt(string $payload)
     {
         // Decode the json payload into a array.
         $payload = json_decode(base64_decode($payload), true, 512, JSON_THROW_ON_ERROR);
@@ -123,6 +118,8 @@ class Encrypter
      * @param array $data Encrypted array payload.
      *
      * @return array Decrypted array.
+     *
+     * @throws JsonException
      */
     public function decryptArray(array $data): array
     {

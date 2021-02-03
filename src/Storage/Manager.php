@@ -4,6 +4,7 @@ namespace Yoke\Storage;
 
 use Symfony\Component\Yaml\{Dumper, Parser};
 use Exception;
+use JsonException;
 
 /**
  * Class Manager.
@@ -12,9 +13,7 @@ use Exception;
  */
 class Manager
 {
-    /**
-     * @var Encrypter
-     */
+    /** @var Encrypter */
     protected Encrypter $encrypter;
 
     /**
@@ -60,6 +59,8 @@ class Manager
      * @param string $type Configuration file name without .yml prefix.
      *
      * @return array Decrypted configuration array.
+     *
+     * @throws JsonException
      */
     public function getConfiguration($type = 'servers'): array
     {
@@ -90,7 +91,6 @@ class Manager
     {
         // Encrypt the configuration array
         $encryptedArray = $this->encrypter->encryptArray($data);
-
         // Transform the encrypted data into YAML.
         $dumper = new Dumper();
         $configuration = $dumper->dump($encryptedArray, 2);
@@ -104,7 +104,7 @@ class Manager
      */
     public function basePath(): string
     {
-        return $_SERVER['HOME'] . '/.yoke';
+        return "{$_SERVER['HOME']}/.yoke";
     }
 
     /**
@@ -131,7 +131,7 @@ class Manager
 
         // If a file name is provided, return it's full path.
         if ($file) {
-            return $this->basePath() . '/' . $file;
+            return "{$this->basePath()}/{$file}";
         }
 
         // Return the base path otherwise.
@@ -145,7 +145,7 @@ class Manager
      *
      * @return bool Exists or not.
      */
-    protected function fileExists($file): bool
+    protected function fileExists(string $file): bool
     {
         return file_exists($this->path($file));
     }
@@ -156,7 +156,7 @@ class Manager
      * @param string $name File name.
      * @param string $contents File contents.
      */
-    protected function storeFile($name, $contents): void
+    protected function storeFile(string $name, string $contents): void
     {
         file_put_contents($this->path($name), $contents);
     }
@@ -168,7 +168,7 @@ class Manager
      *
      * @return string The file contents.
      */
-    protected function getContents($name): string
+    protected function getContents(string $name): string
     {
         return file_get_contents($this->path($name));
     }

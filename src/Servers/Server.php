@@ -17,39 +17,19 @@ namespace Yoke\Servers;
  */
 class Server
 {
-    /**
-     * @var string Connection alias.
-     */
+    /** @var string Connection alias. */
     protected string $alias;
-
-    /**
-     * @var string Server hostname or IP Address.
-     */
+    /** @var string Server hostname or IP Address. */
     protected string $host;
-
-    /**
-     * @var int TCP Connection port.
-     */
+    /** @var int TCP Connection port. */
     protected int $port = 22;
-
-    /**
-     * @var string Server username.
-     */
+    /** @var string Server username. */
     protected string $user;
-
-    /**
-     * @var string Authentication method (key|password|system).
-     */
+    /** @var string Authentication method (key|password|system). */
     protected string $authenticationMethod = 'password';
-
-    /**
-     * @var string Connection password.
-     */
+    /** @var string Connection password. */
     protected string $password;
-
-    /**
-     * @var string Connection private key.
-     */
+    /** @var string Connection private key. */
     protected string $privateKey;
 
     /**
@@ -72,7 +52,7 @@ class Server
      * @param string $key Attribute name.
      * @param mixed $value Attribute value
      */
-    public function __set($key, $value)
+    public function __set(string $key, $value)
     {
         // set the value into class attribute.
         $this->$key = $value;
@@ -85,7 +65,7 @@ class Server
      *
      * @return mixed
      */
-    public function __get($key)
+    public function __get(string $key)
     {
         return $this->$key;
     }
@@ -138,7 +118,7 @@ class Server
         $connectionString = "ssh {$this->keyParameter()} {$this->portParameter()} {$this->userAndHostParameter()}";
 
         if ('password' === $this->authenticationMethod) {
-            $connectionString = $this->passwordHelper() . "\n" . $connectionString;
+            $connectionString = "{$this->passwordHelper()}\n{$connectionString}";
         }
 
         return $connectionString;

@@ -6,8 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Question\{ConfirmationQuestion, Question};
 use Yoke\Servers\Manager;
 
 /**
@@ -17,39 +16,19 @@ use Yoke\Servers\Manager;
  */
 abstract class BaseCommand extends Command
 {
-    /**
-     * @var string Command name.
-     */
+    /** @var string Command name. */
     protected string $name;
-
-    /**
-     * @var string Command description.
-     */
+    /** @var string Command description. */
     protected string $description;
-
-    /**
-     * @var array Command arguments (if any).
-     */
+    /** @var array Command arguments (if any). */
     protected array $arguments = [];
-
-    /**
-     * @var Manager Servers manager instance.
-     */
+    /** @var Manager Servers manager instance. */
     protected Manager $manager;
-
-    /**
-     * @var InputInterface Input handling.
-     */
+    /** @var InputInterface Input handling. */
     protected InputInterface $input;
-
-    /**
-     * @var OutputInterface Output handling.
-     */
+    /** @var OutputInterface Output handling. */
     protected OutputInterface $output;
-
-    /**
-     * @var QuestionHelper Console helper for questions and confirmations.
-     */
+    /** @var QuestionHelper Console helper for questions and confirmations. */
     protected QuestionHelper $questionHelper;
 
     /**
@@ -58,9 +37,9 @@ abstract class BaseCommand extends Command
      * @param InputInterface $input Application provided input handler.
      * @param OutputInterface $output Application provided output handler.
      *
-     * @return int|null|void
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // Assign input and output streams.
         $this->input = $input;
@@ -72,6 +51,8 @@ abstract class BaseCommand extends Command
 
         // Call the child command fire() method.
         $this->fire($input);
+
+        return self::SUCCESS;
     }
 
     /**
@@ -111,7 +92,7 @@ abstract class BaseCommand extends Command
      *
      * @return string The user input or the default value.
      */
-    protected function ask($question, $default = null): string
+    protected function ask(string $question, $default = null): string
     {
         // Creates a new question instance, using the convention formatting.
         $askQuestion = new Question($this->format($question, 'question'), $default);
@@ -130,10 +111,10 @@ abstract class BaseCommand extends Command
      *
      * @return bool Confirmed or Not.
      */
-    protected function askConfirmation($question): bool
+    protected function askConfirmation(string $question): bool
     {
         // Creates a new confirmation instance using convention formatting.
-        $confirmQuestion = new ConfirmationQuestion($this->format("$question (Y/n)", 'question'), false);
+        $confirmQuestion = new ConfirmationQuestion($this->format("{$question} (Y/n)", 'question'), false);
 
         // Do ask the question and return the input.
         return $this->questionHelper->ask($this->input, $this->output, $confirmQuestion);
@@ -147,7 +128,7 @@ abstract class BaseCommand extends Command
      *
      * @return string The formatted string.
      */
-    protected function format($text, $type = 'info'): string
+    protected function format(string $text, $type = 'info'): string
     {
         return "\n<{$type}>{$text}</{$type}> ";
     }
@@ -158,7 +139,7 @@ abstract class BaseCommand extends Command
      * @param string $text The string to be displayed.
      * @param string $format The coloring format.
      */
-    protected function writeln($text, $format = 'info'): void
+    protected function writeln(string $text, $format = 'info'): void
     {
         // Uses output handler to write the formatted string.
         $this->output->writeln($this->format($text, $format));
@@ -169,7 +150,7 @@ abstract class BaseCommand extends Command
      *
      * @param string $text The string to be displayed.
      */
-    protected function writelnPlain($text): void
+    protected function writelnPlain(string $text): void
     {
         // Uses output handler to write the formatted string.
         $this->output->writeln($text);
@@ -180,7 +161,7 @@ abstract class BaseCommand extends Command
      *
      * @param string $text The string to be displayed.
      */
-    protected function question($text): void
+    protected function question(string $text): void
     {
         $this->writeln($text, 'question');
     }
@@ -190,9 +171,9 @@ abstract class BaseCommand extends Command
      *
      * @param string $text The string to be displayed.
      */
-    protected function info($text): void
+    protected function info(string $text): void
     {
-        $this->writeln($text, 'info');
+        $this->writeln($text);
     }
 
     /**
@@ -200,7 +181,7 @@ abstract class BaseCommand extends Command
      *
      * @param string $text The string to be displayed.
      */
-    protected function comment($text): void
+    protected function comment(string $text): void
     {
         $this->writeln($text, 'comment');
     }
@@ -210,7 +191,7 @@ abstract class BaseCommand extends Command
      *
      * @param string $text The string to be displayed.
      */
-    protected function error($text): void
+    protected function error(string $text): void
     {
         $this->writeln($text, 'error');
     }
@@ -222,7 +203,7 @@ abstract class BaseCommand extends Command
      *
      * @return mixed The user provided value.
      */
-    protected function argument($name)
+    protected function argument(string $name)
     {
         return $this->input->getArgument($name);
     }

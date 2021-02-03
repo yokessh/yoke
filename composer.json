@@ -1,5 +1,5 @@
 {
-    "name": "hernandev/yoke",
+    "name": "yokessh/yoke",
     "description": "Yoke: SSH Connection Manager/Wallet",
     "keywords": [
         "ssh",
@@ -12,15 +12,19 @@
         {
             "name": "Diego Hernandes",
             "email": "diego@hernandev.com"
+        },
+        {
+            "name": "Lucas Mezêncio",
+            "email": "eu@lucasmezencio.com"
         }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^7.4|^8.0",
         "ext-json": "*",
         "ext-openssl": "*",
-        "symfony/console": "^4",
-        "symfony/yaml": "^4",
-        "symfony/process": "^5.0"
+        "symfony/console": "^5",
+        "symfony/yaml": "^5",
+        "symfony/process": "^5"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master"

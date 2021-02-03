@@ -13,14 +13,9 @@ use Yoke\Storage\Manager as StorageManager;
  */
 class Manager
 {
-    /**
-     * @var StorageManager Storage handling.
-     */
+    /** @var StorageManager Storage handling. */
     protected StorageManager $storageManager;
-
-    /**
-     * @var array List of store server connections.
-     */
+    /** @var array List of store server connections. */
     protected array $servers = [];
 
     /**
@@ -86,16 +81,18 @@ class Manager
      *
      * @throws Exception
      */
-    public function deleteServer($alias): void
+    public function deleteServer(string $alias): void
     {
         // Find the server.
         $server = $this->getServer($alias);
 
-        // Forget the server from the server connection instances list
-        unset($this->servers[$server->alias]);
+        if ($server) {
+            // Forget the server from the server connection instances list
+            unset($this->servers[$server->alias]);
 
-        // Write the updated configuration file
-        $this->writeServers();
+            // Write the updated configuration file
+            $this->writeServers();
+        }
     }
 
     /**
@@ -113,7 +110,7 @@ class Manager
         }
 
         // Write the servers array into the servers.yml file.
-        $this->storageManager->writeConfiguration($servers, 'servers');
+        $this->storageManager->writeConfiguration($servers);
     }
 
     /**
@@ -125,7 +122,7 @@ class Manager
      *
      * @throws NotFoundException When the desired alias is not registered.
      */
-    public function getServer($alias): ?Server
+    public function getServer(string $alias): ?Server
     {
         if ($this->serverExists($alias)) {
             return $this->servers[$alias];
@@ -151,7 +148,7 @@ class Manager
      *
      * @return bool Registered or not.
      */
-    public function serverExists($alias): bool
+    public function serverExists(string $alias): bool
     {
         return array_key_exists($alias, $this->servers);
     }

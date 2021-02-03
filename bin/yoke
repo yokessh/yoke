@@ -10,7 +10,7 @@ Y_PATH=$(which yokephp)
 Y_PHP_PATH=$(which php)
 
 # If the current command is to connect.
-if [ "${Y_COMMAND}" == "connect" ]; then
+if [ "${Y_COMMAND}" == "connect" ] || [ "${Y_COMMAND}" == "c" ]; then
     # save the execution return into a variable for later parsing.
     Y_RETURN=$(${Y_PHP_PATH} ${Y_PATH} ${Y_COMMAND} ${Y_ARGUMENT})
 else
@@ -23,7 +23,7 @@ fi
 # If the return starts with ssh.
 if [[ ${Y_RETURN} =~ ^ssh.* ]]; then
     # Execute the returned line into the terminal (connect).
-    ${Y_RETURN}
+    eval ${Y_RETURN}
 fi
 
 # If the return starts with Password.
@@ -34,5 +34,6 @@ if [[ ${Y_RETURN} =~ ^Password.* ]]; then
 
     # Display the
     echo ${Y_PASSWORD_HELPER}
-    ${Y_PASSWORD_COMMAND}
+
+    eval ${Y_PASSWORD_COMMAND}
 fi
