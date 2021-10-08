@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
 # Desired command.
-Y_COMMAND=$1
-# Command argument.
-Y_ARGUMENT=$2
+Y_COMMAND=${1}
 # Path of phpyoke script.
 Y_PATH=$(which yokephp)
 # Path of active PHP.
@@ -12,10 +10,10 @@ Y_PHP_PATH=$(which php)
 # If the current command is to connect.
 if [ "${Y_COMMAND}" == "connect" ] || [ "${Y_COMMAND}" == "c" ]; then
     # save the execution return into a variable for later parsing.
-    Y_RETURN=$(${Y_PHP_PATH} ${Y_PATH} ${Y_COMMAND} ${Y_ARGUMENT})
+    Y_RETURN=$(${Y_PHP_PATH} "${Y_PATH}" "${Y_COMMAND}" "${@: 2}")
 else
     # If the command is other than connect, pass through.
-    ${Y_PHP_PATH} ${Y_PATH} ${Y_COMMAND} ${Y_ARGUMENT}
+    ${Y_PHP_PATH} "${Y_PATH}" "${Y_COMMAND}" "${@: 2}"
     # Define a empty Y_RETURN
     Y_RETURN=""
 fi
@@ -23,7 +21,7 @@ fi
 # If the return starts with ssh.
 if [[ ${Y_RETURN} =~ ^ssh.* ]]; then
     # Execute the returned line into the terminal (connect).
-    eval ${Y_RETURN}
+    eval "${Y_RETURN}"
 fi
 
 # If the return starts with Password.
@@ -32,8 +30,8 @@ if [[ ${Y_RETURN} =~ ^Password.* ]]; then
     Y_PASSWORD_HELPER=$(echo -e "${Y_RETURN}" | awk 'NR==1')
     Y_PASSWORD_COMMAND=$(echo -e "${Y_RETURN}" | awk 'NR==2')
 
-    # Display the
-    echo ${Y_PASSWORD_HELPER}
-
-    eval ${Y_PASSWORD_COMMAND}
+    # Display the password
+    echo "${Y_PASSWORD_HELPER}"
+    # Connect
+    eval "${Y_PASSWORD_COMMAND}"
 fi
