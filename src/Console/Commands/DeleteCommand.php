@@ -15,10 +15,14 @@ class DeleteCommand extends BaseCommand
     protected string $name = 'delete';
     protected string $description = 'Remove a connection configuration.';
 
-    /** @var array|array[] Command arguments. */
-    protected array $arguments = [
-        ['alias', InputArgument::REQUIRED, 'The connection to be removed.'],
-    ];
+    public function __construct()
+    {
+        $this->arguments = [
+            new InputArgument('alias', InputArgument::REQUIRED, 'The connection to be removed.'),
+        ];
+
+        parent::__construct();
+    }
 
     /**
      * Execute the command.

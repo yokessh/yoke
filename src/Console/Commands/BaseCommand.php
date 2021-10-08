@@ -4,6 +4,7 @@ namespace Yoke\Console\Commands;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\{ConfirmationQuestion, Question};
@@ -19,7 +20,7 @@ abstract class BaseCommand extends Command
     protected string $name;
     protected string $description;
     protected array $arguments = [];
-    /** @var Manager Servers manager instance. */
+    protected array $options = [];
     protected Manager $manager;
     protected InputInterface $input;
     protected OutputInterface $output;
@@ -64,10 +65,12 @@ abstract class BaseCommand extends Command
         // Configure single letter alias for the command.
         $this->setAliases([$alias]);
 
-        // Loop through arguments and register them.
-        foreach ($this->arguments as $argument) {
-            $this->addArgument($argument[0], $argument[1], $argument[2]);
-        }
+        $this->setDefinition(
+            new InputDefinition([
+                ...$this->arguments,
+                ...$this->options,
+            ])
+        );
     }
 
     /**

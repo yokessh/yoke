@@ -15,10 +15,14 @@ class AddCommand extends BaseCommand
     protected string $name = 'add';
     protected string $description = 'Store a new connection configuration.';
 
-    /** @var array|array[] Command arguments. */
-    protected array $arguments = [
-        ['alias', InputArgument::OPTIONAL, 'Connection Alias'],
-    ];
+    public function __construct()
+    {
+        $this->arguments = [
+            new InputArgument('alias', InputArgument::OPTIONAL, 'Connection alias'),
+        ];
+
+        parent::__construct();
+    }
 
     /**
      * Execute the command.

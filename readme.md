@@ -5,7 +5,7 @@ Also, sometimes we face ourselfs with more than one private key to authenticate 
 
 Yoke aims to be a single repository for server managements to allow you to fastly connect to your servers just by remembering it's alias, like.
 
-```bash
+```shell
 yoke connect myserver
 ```
 
@@ -17,14 +17,14 @@ With security in mind, all information about your servers is encrypted using **A
 
 > .phar distribution may be available in the future.
 
-In order to use Yoke, you need PHP 5.5+ installed, with openssl extension enables (default on most installs)
+In order to use Yoke, you need PHP 8+ installed, with openssl extension enables (default on most installs)
 
 The installation process is based on the global composer packages, so you need to have a working composer install with the correct binary path settings. [Read this tutorial ](https://akrabat.com/global-installation-of-php-tools-with-composer/)
 
 If you have the requirements, install Yoke by running:
 
-```bash
-composer global require hernandev/yoke
+```shell
+composer global require yokessh/yoke
 ```
 
 This is all you need to do! Time for usage instructions.
@@ -37,14 +37,14 @@ Using Yoke is really simple and straightforward.
 
 In order to store a new connection, just run the command
 
-```bash
-yoke add
+```shell
+yoke add [alias]
 ```
 
 You will then be presented with a few questions:
 
 ```
-Registering a new Server Configuration! 
+Registering a new Server Configuration!
 
 Server connection alias (server1): sample-server
 
@@ -54,19 +54,25 @@ Server hostname or IP Address (192.168.0.1): server.sampleapp.com
 
 Server Port (22): 6262
 
-Authentication Method:[system|key|password] (system): key  
+Authentication Method:[system|key|password] (system): key
 
-Private Key (~/.ssh/id_rsa): 
+Private Key (~/.ssh/id_rsa):
 
-Server registered successfully! 
+Server registered successfully!
 ```
 
 #### Connecting
 
 As we have this connection in place, we can stablish a connection, anytime we want just by running a simple command:
 
-```
+```shell
 yoke connect sample-server
+```
+
+In case it's a server with a password, you can optionally ask to show the password when connecting:
+
+```shell
+yoke connect sample-server --password
 ```
 
 Easy right?
@@ -75,13 +81,13 @@ Easy right?
 
 Forgot a server alias? Don't worry, you can just run:
 
-```
+```shell
 yoke servers
 ```
 
 To see a list of stored connections, like this one
 
-```
+```markdown
 +---------------+----------------------+-------------+------+--------------+
 | Name          | Host                 | Username    | Port | Auth. Method |
 +---------------+----------------------+-------------+------+--------------+
@@ -91,20 +97,19 @@ To see a list of stored connections, like this one
 +---------------+----------------------+-------------+------+--------------+
 ```
 
-
 #### Removing a connection
 Don't need a stored connection anymore?
 
 Just run
 
-```
-yoke delete connection-name
+```shell
+yoke delete alias
 ```
 
 Confirm the deletion and it's done!.
 
 
-#### Final Notes: 
+#### Final Notes:
 There are 3 different allows authentication types:
 
 - `key` - uses a specified private key to stabilish the connection

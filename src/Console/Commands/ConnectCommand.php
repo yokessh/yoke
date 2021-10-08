@@ -2,7 +2,7 @@
 
 namespace Yoke\Console\Commands;
 
-use Symfony\Component\Console\Input\{InputArgument, InputInterface};
+use Symfony\Component\Console\Input\{InputArgument, InputInterface, InputOption};
 
 /**
  * Class ConnectCommand
@@ -14,11 +14,17 @@ class ConnectCommand extends BaseCommand
     protected string $name = 'connect';
     protected string $description = 'Connect into a saved configuration';
 
-    /** @var array Command arguments. */
-    protected array $arguments = [
-        // Connection alias.
-        ['alias', InputArgument::REQUIRED, 'Connection Alias'],
-    ];
+    public function __construct()
+    {
+        $this->arguments = [
+            new InputArgument('alias', InputArgument::REQUIRED, 'Connection alias'),
+        ];
+        $this->options = [
+            new InputOption('password', 'p', null, 'Show password'),
+        ];
+
+        parent::__construct();
+    }
 
     /**
      * Execute the command.
@@ -41,6 +47,6 @@ class ConnectCommand extends BaseCommand
         // Write the console line to be executed on the bash side of
         // the string. sometimes it will contain a password
         // for usage while authenticating
-        $this->writelnPlain($server->connectionString());
+        $this->writelnPlain($server->connectionString($input->getOption('password')));
     }
 }
