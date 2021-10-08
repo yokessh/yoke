@@ -13,9 +13,7 @@ use Yoke\Storage\Manager as StorageManager;
  */
 class Manager
 {
-    /** @var StorageManager Storage handling. */
     protected StorageManager $storageManager;
-    /** @var array List of store server connections. */
     protected array $servers = [];
 
     /**
@@ -35,8 +33,8 @@ class Manager
      */
     protected function loadServers(): void
     {
-        // Get the servers configuration array from the servers.yml file.
-        $servers = $this->storageManager->getConfiguration('servers');
+        // Get the servers' configuration array from the servers.yml file.
+        $servers = $this->storageManager->getConfiguration();
 
         // Register each server configuration as a Server instance.
         foreach ($servers as $serverData) {
@@ -53,7 +51,6 @@ class Manager
     {
         // Generate a new server connection instance.
         $server = new Server($data);
-
         // Register the server connection into the servers list.
         $this->servers[$server->alias] = $server;
     }

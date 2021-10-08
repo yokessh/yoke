@@ -17,20 +17,13 @@ namespace Yoke\Servers;
  */
 class Server
 {
-    /** @var string Connection alias. */
     protected string $alias;
-    /** @var string Server hostname or IP Address. */
     protected string $host;
-    /** @var int TCP Connection port. */
     protected int $port = 22;
-    /** @var string Server username. */
     protected string $user;
-    /** @var string Authentication method (key|password|system). */
     protected string $authenticationMethod = 'password';
-    /** @var string Connection password. */
-    protected string $password;
-    /** @var string Connection private key. */
-    protected string $privateKey;
+    protected string $password = '';
+    protected string $privateKey = '';
 
     /**
      * Server constructor.
@@ -41,7 +34,7 @@ class Server
     {
         // For each config key
         foreach ($config as $key => $value) {
-            // Set into it's own attribute.
+            // Set into its own attribute.
             $this->$key = $value;
         }
     }
@@ -81,7 +74,7 @@ class Server
     /**
      * @return string The password helper line.
      */
-    protected function passwordHelper(): string
+    public function passwordHelper(): string
     {
         return "Password: {$this->password}";
     }
@@ -111,13 +104,15 @@ class Server
     }
 
     /**
+     * @param bool|null $showPassword
+     *
      * @return string The final ssh connection string.
      */
-    public function connectionString(): string
+    public function connectionString(?bool $showPassword = false): string
     {
         $connectionString = "ssh {$this->keyParameter()} {$this->portParameter()} {$this->userAndHostParameter()}";
 
-        if ('password' === $this->authenticationMethod) {
+        if ('password' === $this->authenticationMethod && $showPassword) {
             $connectionString = "{$this->passwordHelper()}\n{$connectionString}";
         }
 

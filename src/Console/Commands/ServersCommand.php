@@ -13,9 +13,7 @@ use Yoke\Servers\Exceptions\NotFoundException;
  */
 class ServersCommand extends BaseCommand
 {
-    /** @var string Command name. */
     protected string $name = 'servers';
-    /** @var string Command description. */
     protected string $description = 'List the available servers.';
 
     /**

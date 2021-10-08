@@ -12,27 +12,21 @@ use Yoke\Servers\Manager;
 /**
  * Class BaseCommand.
  *
- * Abstract base command to help building neat commands.
+ * Abstract base command to help to build neat commands.
  */
 abstract class BaseCommand extends Command
 {
-    /** @var string Command name. */
     protected string $name;
-    /** @var string Command description. */
     protected string $description;
-    /** @var array Command arguments (if any). */
     protected array $arguments = [];
     /** @var Manager Servers manager instance. */
     protected Manager $manager;
-    /** @var InputInterface Input handling. */
     protected InputInterface $input;
-    /** @var OutputInterface Output handling. */
     protected OutputInterface $output;
-    /** @var QuestionHelper Console helper for questions and confirmations. */
     protected QuestionHelper $questionHelper;
 
     /**
-     * Main Command method, calls the fire command on it's child commands.
+     * Main Command method, calls the fire command on its child commands.
      *
      * @param InputInterface $input Application provided input handler.
      * @param OutputInterface $output Application provided output handler.
@@ -97,7 +91,7 @@ abstract class BaseCommand extends Command
         // Creates a new question instance, using the convention formatting.
         $askQuestion = new Question($this->format($question, 'question'), $default);
 
-        // Do ask que question created and return it's answer value.
+        // Do ask que question created and return its answer value.
         return $this->questionHelper->ask($this->input, $this->output, $askQuestion);
     }
 
@@ -116,7 +110,7 @@ abstract class BaseCommand extends Command
         // Creates a new confirmation instance using convention formatting.
         $confirmQuestion = new ConfirmationQuestion($this->format("{$question} (Y/n)", 'question'), false);
 
-        // Do ask the question and return the input.
+        // Ask and return the input.
         return $this->questionHelper->ask($this->input, $this->output, $confirmQuestion);
     }
 
@@ -128,7 +122,7 @@ abstract class BaseCommand extends Command
      *
      * @return string The formatted string.
      */
-    protected function format(string $text, $type = 'info'): string
+    protected function format(string $text, string $type = 'info'): string
     {
         return "\n<{$type}>{$text}</{$type}> ";
     }
@@ -139,7 +133,7 @@ abstract class BaseCommand extends Command
      * @param string $text The string to be displayed.
      * @param string $format The coloring format.
      */
-    protected function writeln(string $text, $format = 'info'): void
+    protected function writeln(string $text, string $format = 'info'): void
     {
         // Uses output handler to write the formatted string.
         $this->output->writeln($this->format($text, $format));

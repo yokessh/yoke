@@ -11,9 +11,7 @@ use Symfony\Component\Console\Input\{InputArgument, InputInterface};
  */
 class ConnectCommand extends BaseCommand
 {
-    /** @var string Command name. */
     protected string $name = 'connect';
-    /** @var string Command description. */
     protected string $description = 'Connect into a saved configuration';
 
     /** @var array Command arguments. */

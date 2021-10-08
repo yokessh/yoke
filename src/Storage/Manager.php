@@ -13,7 +13,6 @@ use JsonException;
  */
 class Manager
 {
-    /** @var Encrypter */
     protected Encrypter $encrypter;
 
     /**
@@ -62,7 +61,7 @@ class Manager
      *
      * @throws JsonException
      */
-    public function getConfiguration($type = 'servers'): array
+    public function getConfiguration(string $type = 'servers'): array
     {
         // If the requested configuration file exists.
         if ($this->fileExists("{$type}.yml")) {
@@ -75,7 +74,7 @@ class Manager
             return $this->encrypter->decryptArray($encryptedConfiguration);
         }
 
-        // Otherwise just return an empty array.
+        // Otherwise, just return an empty array.
         return [];
     }
 
@@ -87,7 +86,7 @@ class Manager
      *
      * @throws Exception
      */
-    public function writeConfiguration(array $data, $type = 'servers'): void
+    public function writeConfiguration(array $data, string $type = 'servers'): void
     {
         // Encrypt the configuration array
         $encryptedArray = $this->encrypter->encryptArray($data);

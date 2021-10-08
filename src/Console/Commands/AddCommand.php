@@ -12,9 +12,7 @@ use Symfony\Component\Console\Input\{InputArgument, InputInterface};
  */
 class AddCommand extends BaseCommand
 {
-    /** @var string Command name. */
     protected string $name = 'add';
-    /** @var string Command description. */
     protected string $description = 'Store a new connection configuration.';
 
     /** @var array|array[] Command arguments. */

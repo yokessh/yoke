@@ -12,9 +12,7 @@ use Symfony\Component\Console\Input\{InputArgument, InputInterface};
  */
 class DeleteCommand extends BaseCommand
 {
-    /** @var string Command name. */
     protected string $name = 'delete';
-    /** @var string Command description. */
     protected string $description = 'Remove a connection configuration.';
 
     /** @var array|array[] Command arguments. */
