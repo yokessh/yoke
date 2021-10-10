@@ -1,7 +1,7 @@
 ## Yoke: SSH Connection Manager
 
-Yoke is a PHP based **SSH connection manager**. Sometimes storing servers hosts, usernames, ports and passwords can be tricky, SSH Key authentication makes it easier for us but it don't solve the problem of remembering all the other information.
-Also, sometimes we face ourselfs with more than one private key to authenticate with (like multiple accounts on AWS).
+Yoke is a PHP based **SSH connection manager**. Sometimes storing servers hosts, usernames, ports and passwords can be tricky, SSH Key authentication makes it easier for us, but it doesn't solve the problem of remembering all the other information.
+Also, sometimes we face ourselves with more than one private key to authenticate with (like multiple accounts on AWS).
 
 Yoke aims to be a single repository for server managements to allow you to fastly connect to your servers just by remembering it's alias, like.
 
@@ -11,7 +11,7 @@ yoke connect myserver
 
 With security in mind, all information about your servers is encrypted using **AES 256**.
 
-**NOTICE** The encryption key is also stored into your computer, Yoke encryption only makes it harder for users to identify and decrypt the information. But just like SSH private keys, it does not protects against people getting access to your filesystem.
+**NOTICE** The encryption key is also stored into your computer, Yoke encryption only makes it harder for users to identify and decrypt the information. But just like SSH private keys, it does not protect against people getting access to your filesystem.
 
 ### Installation
 
@@ -63,7 +63,7 @@ Server registered successfully!
 
 #### Connecting
 
-As we have this connection in place, we can stablish a connection, anytime we want just by running a simple command:
+As we have this connection in place, we can establish a connection, anytime we want just by running a simple command:
 
 ```shell
 yoke connect sample-server
@@ -112,6 +112,6 @@ Confirm the deletion and it's done!.
 #### Final Notes:
 There are 3 different allows authentication types:
 
-- `key` - uses a specified private key to stabilish the connection
+- `key` - uses a specified private key to establish the connection
 - `system` - Do not specify a private key to connect, it lets ssh try to connection with current user's key
-- `password` - SSH does not allow passing plain password as a parameter, Yoke will just show the password on screen so you can copy and paste it. **Password authentication is highly unrecommended**.
+- `password` - SSH does not allow passing plain password as a parameter, Yoke will just show the password on screen, so you can copy and paste it. **Password authentication is highly unrecommended**.
