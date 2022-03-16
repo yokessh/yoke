@@ -151,4 +151,21 @@ class Encrypter
 
         return $encryptedArray;
     }
+
+    public function handleMultidimensionalArray(array $data, string $action): array
+    {
+        $return = [];
+
+        $function = match ($action) {
+            'encrypt' => 'encryptArray',
+            'decrypt' => 'decryptArray',
+            default => throw new RuntimeException('Not supported Encrypter action.'),
+        };
+
+        foreach ($data as $dataSet) {
+            $return[] = $this->$function($dataSet);
+        }
+
+        return $return;
+    }
 }

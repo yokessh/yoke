@@ -70,8 +70,7 @@ class Manager
             // Gets the encrypted configuration array from YML.
             $encryptedConfiguration = $parser->parse($this->getContents("{$type}.yml"));
 
-            // Decrypt and them return the configuration array.
-            return $this->encrypter->decryptArray($encryptedConfiguration);
+            return $this->encrypter->handleMultidimensionalArray($encryptedConfiguration, 'decrypt');
         }
 
         // Otherwise, just return an empty array.
@@ -88,8 +87,7 @@ class Manager
      */
     public function writeConfiguration(array $data, string $type = 'servers'): void
     {
-        // Encrypt the configuration array
-        $encryptedArray = $this->encrypter->encryptArray($data);
+        $encryptedArray = $this->encrypter->handleMultidimensionalArray($data, 'encrypt');
         // Transform the encrypted data into YAML.
         $dumper = new Dumper();
         $configuration = $dumper->dump($encryptedArray, 2);
