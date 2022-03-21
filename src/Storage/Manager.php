@@ -13,7 +13,7 @@ use JsonException;
  */
 class Manager
 {
-    protected Encrypter $encrypter;
+    protected Encryptor $encryptor;
 
     /**
      * Manager constructor.
@@ -22,15 +22,14 @@ class Manager
      */
     public function __construct()
     {
-        // New encrypter instance.
-        $this->encrypter = new Encrypter($this->getOrGenerateKey());
+        $this->encryptor = new Encryptor($this->getOrGenerateKey());
     }
 
     /**
      * Get a existing or create a new encryption key.
      *
      * This method reads the encryption key of the encryption.key file, if this file
-     * does not exists, it generates a new key using the encrypter static method
+     * does not exist, it generates a new key using the encryptor static method
      * and then stores it.
      *
      * WARNING: If the encryption key is changed the stored values will not be able of
@@ -44,7 +43,7 @@ class Manager
     {
         // Generates a new key is none exists.
         if (!$this->fileExists('encryption.key')) {
-            $this->storeFile('encryption.key', Encrypter::generateKey());
+            $this->storeFile('encryption.key', Encryptor::generateKey());
         }
 
         // Return the encryption key.
@@ -71,7 +70,8 @@ class Manager
             $encryptedConfiguration = $parser->parse($this->getContents("{$type}.yml"));
 
             // Decrypt and them return the configuration array.
-            return $this->encrypter->decryptArray($encryptedConfiguration);
+            return $this->encryptor->decryptArray($encryptedConfiguration);
+            //return $this->encryptor->handleMultidimensionalArray($encryptedConfiguration, 'decrypt');
         }
 
         // Otherwise, just return an empty array.
@@ -89,7 +89,8 @@ class Manager
     public function writeConfiguration(array $data, string $type = 'servers'): void
     {
         // Encrypt the configuration array
-        $encryptedArray = $this->encrypter->encryptArray($data);
+        //$encryptedArray = $this->encryptor->handleMultidimensionalArray($data, 'encrypt');
+        $encryptedArray = $this->encryptor->encryptArray($data);
         // Transform the encrypted data into YAML.
         $dumper = new Dumper();
         $configuration = $dumper->dump($encryptedArray, 2);
@@ -125,7 +126,7 @@ class Manager
      */
     protected function path($file = null): string
     {
-        // Check if the folder exists, create if don't.
+        // Check if the folder exists, create if it doesn't.
         $this->prepareBasePath();
 
         // If a file name is provided, return it's full path.

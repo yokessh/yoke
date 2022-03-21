@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\{InputArgument, InputInterface};
 class AddCommand extends BaseCommand
 {
     protected string $name = 'add';
-    protected string $description = 'Store a new connection configuration.';
+    protected string $description = 'Store a new connection';
 
     public function __construct()
     {
@@ -29,12 +29,16 @@ class AddCommand extends BaseCommand
      *
      * @param InputInterface $input
      *
+     * @return int
+     *
      * @throws Exception
      */
-    protected function fire(InputInterface $input): void
+    protected function fire(InputInterface $input): int
     {
         // Greetings.
         $this->info('Registering a new Server Configuration!');
+
+        $serverData = [];
 
         // Read initial connection data.
         if (!$serverData['alias'] = $input->getArgument('alias')) {
@@ -66,5 +70,7 @@ class AddCommand extends BaseCommand
         if ($this->manager->serverExists($serverData['alias'])) {
             $this->comment('Server registered successfully!');
         }
+
+        return self::SUCCESS;
     }
 }

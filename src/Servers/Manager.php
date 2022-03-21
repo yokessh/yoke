@@ -30,6 +30,8 @@ class Manager
 
     /**
      * Load the stored servers.
+     *
+     * @throws \JsonException
      */
     protected function loadServers(): void
     {
@@ -115,7 +117,7 @@ class Manager
      *
      * @param string $alias Server connection alias.
      *
-     * @return Server The Server connection instance.
+     * @return Server|null The Server connection instance.
      *
      * @throws NotFoundException When the desired alias is not registered.
      */

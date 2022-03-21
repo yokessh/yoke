@@ -45,7 +45,7 @@ class Server
      * @param string $key Attribute name.
      * @param mixed $value Attribute value
      */
-    public function __set(string $key, $value)
+    public function __set(string $key, mixed $value)
     {
         // set the value into class attribute.
         $this->$key = $value;
@@ -126,31 +126,31 @@ class Server
     {
         $configArray = [];
 
-        if ($this->alias) {
+        if (isset($this->alias)) {
             $configArray['alias'] = $this->alias;
         }
 
-        if ($this->host) {
+        if (isset($this->host)) {
             $configArray['host'] = $this->host;
         }
 
-        if ($this->port) {
+        if (isset($this->port)) {
             $configArray['port'] = $this->port;
         }
 
-        if ($this->user) {
+        if (isset($this->user)) {
             $configArray['user'] = $this->user;
         }
 
-        if ($this->authenticationMethod) {
+        if (isset($this->authenticationMethod)) {
             $configArray['authenticationMethod'] = $this->authenticationMethod;
         }
 
-        if ($this->password) {
+        if (isset($this->password)) {
             $configArray['password'] = $this->password;
         }
 
-        if ($this->privateKey) {
+        if (isset($this->privateKey)) {
             $configArray['privateKey'] = $this->privateKey;
         }
 
