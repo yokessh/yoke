@@ -45,9 +45,7 @@ abstract class BaseCommand extends Command
         $this->manager = new Manager();
 
         // Call the child command fire() method.
-        $this->fire($input);
-
-        return self::SUCCESS;
+        return $this->fire($input);
     }
 
     /**
@@ -64,7 +62,6 @@ abstract class BaseCommand extends Command
 
         // Configure single letter alias for the command.
         $this->setAliases([$alias]);
-
         $this->setDefinition(
             new InputDefinition([
                 ...$this->arguments,
@@ -77,8 +74,10 @@ abstract class BaseCommand extends Command
      * Abstract fire method to be implemented on child commands.
      *
      * @param InputInterface $input
+     *
+     * @return int Success or Failure
      */
-    abstract protected function fire(InputInterface $input): void;
+    abstract protected function fire(InputInterface $input): int;
 
     /**
      * Abstracts the question process into a single method.
@@ -111,7 +110,7 @@ abstract class BaseCommand extends Command
     protected function askConfirmation(string $question): bool
     {
         // Creates a new confirmation instance using convention formatting.
-        $confirmQuestion = new ConfirmationQuestion($this->format("{$question} (Y/n)", 'question'), false);
+        $confirmQuestion = new ConfirmationQuestion($this->format("{$question} (y/N)", 'question'), false);
 
         // Ask and return the input.
         return $this->questionHelper->ask($this->input, $this->output, $confirmQuestion);
@@ -200,7 +199,7 @@ abstract class BaseCommand extends Command
      *
      * @return mixed The user provided value.
      */
-    protected function argument(string $name)
+    protected function argument(string $name): mixed
     {
         return $this->input->getArgument($name);
     }

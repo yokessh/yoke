@@ -10,12 +10,12 @@ use function openssl_decrypt;
 use function openssl_encrypt;
 
 /**
- * Class Encrypter.
+ * Class Encryptor.
  *
  * Encryption class to make Yoke values safely stored.
  * Hardly based on Laravel's Crypt.
  */
-class Encrypter
+class Encryptor
 {
     /** @var string Encryption cipher */
     protected string $cipher = 'AES-256-CBC';
@@ -25,7 +25,7 @@ class Encrypter
     protected string $key;
 
     /**
-     * Encrypter constructor.
+     * Encryptor constructor.
      *
      * @param $key
      */
@@ -37,35 +37,36 @@ class Encrypter
     /**
      * Encrypt the given value.
      *
-     * @param string $value
+     * @param mixed $payload
      *
      * @return string
      *
      * @throws Exception
      */
-    public function encrypt(string $value): string
+    public function encrypt(mixed $payload): string
     {
         // Generate a IV.
-        $iv = random_bytes($this->ivSize);
+        $originalIv = openssl_random_pseudo_bytes($this->ivSize);
         // Encrypt the value.
-        $value = openssl_encrypt(serialize($value), $this->cipher, $this->key, 0, $iv);
+        $value = openssl_encrypt(serialize($payload), $this->cipher, $this->key, 0, $originalIv);
 
         // If the value was not encrypted successfully.
         if ($value === false) {
-            // Throw a exception.
+            // Throw an exception.
             throw new RuntimeException('Could not Encrypt the give value.');
         }
 
+        $data = $originalIv . $value;
         // Calculate the HMAC.
-        $mac = hash_hmac('sha256', $iv . $value, $this->key);
+        $mac = hash_hmac('sha256', $data, $this->key);
         // Encode IV into encodable format.
-        $iv = base64_encode($iv);
-        // Encode the IV, Value and HMAV into a JSON Payload that will be stored.
+        $iv = base64_encode($originalIv);
+        // Encode the IV, Value and HMAC into a JSON Payload that will be stored.
         $json = json_encode(compact('iv', 'value', 'mac'), JSON_THROW_ON_ERROR);
 
         // Check for the encoded json string
         if (!is_string($json)) {
-            throw new RuntimeException('Could not Encrypt the give value.');
+            throw new RuntimeException('Could not encrypt the given data.');
         }
 
         // return the encrypted and encoded payload
@@ -75,15 +76,15 @@ class Encrypter
     /**
      * Decrypt a given value.
      *
-     * @param string $payload The encrypted payload
+     * @param mixed $payload The encrypted payload
      *
      * @return mixed The Decrypted value.
      *
      * @throws JsonException
      */
-    public function decrypt(string $payload)
+    public function decrypt(mixed $payload): mixed
     {
-        // Decode the json payload into a array.
+        // Decode the json payload into an array.
         $payload = json_decode(base64_decode($payload), true, 512, JSON_THROW_ON_ERROR);
         // Get the IV from the payload.
         $iv = base64_decode($payload['iv']);

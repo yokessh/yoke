@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\{InputArgument, InputInterface};
 class DeleteCommand extends BaseCommand
 {
     protected string $name = 'delete';
-    protected string $description = 'Remove a connection configuration.';
+    protected string $description = 'Remove a connection configuration';
 
     public function __construct()
     {
@@ -29,9 +29,11 @@ class DeleteCommand extends BaseCommand
      *
      * @param InputInterface $input
      *
+     * @return int
+     *
      * @throws Exception
      */
-    protected function fire(InputInterface $input): void
+    protected function fire(InputInterface $input): int
     {
         // Find the server.
         $alias = $this->argument('alias');
@@ -51,5 +53,7 @@ class DeleteCommand extends BaseCommand
             // And congratulate.
             $this->info('Server connection deleted successfully!');
         }
+
+        return self::SUCCESS;
     }
 }

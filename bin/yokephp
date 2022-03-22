@@ -14,7 +14,7 @@ if (file_exists($globalPath)) {
 
 // Imports for shorter code.
 use Symfony\Component\Console\Application;
-use Yoke\Console\Commands\{AddCommand, ServersCommand, ConnectCommand, DeleteCommand};
+use Yoke\Console\Commands\{AddCommand, EditCommand, ServersCommand, ConnectCommand, DeleteCommand};
 
 // Create a new console application instance.
 $yoke = new Application();
@@ -25,5 +25,6 @@ $yoke->add(new AddCommand());
 $yoke->add(new ServersCommand());
 $yoke->add(new ConnectCommand());
 $yoke->add(new DeleteCommand());
+$yoke->add(new EditCommand());
 // Run the application.
 $yoke->run();

@@ -5,6 +5,7 @@ namespace Yoke\Console\Commands;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Yoke\Servers\Exceptions\NotFoundException;
+use Yoke\Servers\Server;
 
 /**
  * Class ServersCommand.
@@ -14,30 +15,34 @@ use Yoke\Servers\Exceptions\NotFoundException;
 class ServersCommand extends BaseCommand
 {
     protected string $name = 'servers';
-    protected string $description = 'List the available servers.';
+    protected string $description = 'List available servers';
 
     /**
      * Execute the command.
      *
      * @param InputInterface $input
+     *
+     * @return int
      */
-    protected function fire(InputInterface $input): void
+    protected function fire(InputInterface $input): int
     {
         // Get the available servers.
         $servers = $this->manager->getServers();
 
         // If there is no servers registered.
+        // @todo: this shouldn't be an error, just a warning maybe
         if (!count($servers)) {
             throw new NotFoundException('No servers available.');
-            // Otherwise.
         }
 
         // Render the servers table.
         $this->serversTable($servers);
+
+        return self::SUCCESS;
     }
 
     /**
-     * Renders the servers table into console.
+     * Renders the servers' table into console.
      *
      * @param array $servers
      */
@@ -51,13 +56,25 @@ class ServersCommand extends BaseCommand
         // Loop on available connections to build the rows.
         $rows = [];
 
+        /** @var Server $server */
         foreach ($servers as $server) {
-            $rows[] = [$server->alias, $server->host, $server->user, $server->port, $server->authenticationMethod];
+            $rows[] = [
+                $server->alias,
+                $this->isIP($server->host) ? "<fg=yellow>{$server->host}</>" : $server->host,
+                $server->user,
+                "<fg=yellow>{$server->port}</>",
+                $server->authenticationMethod,
+            ];
         }
 
         // Set the table rows
         $table->setRows($rows);
         // Render the table.
         $table->render();
+    }
+
+    private function isIP(string $host): bool
+    {
+        return (bool)filter_var($host, FILTER_VALIDATE_IP);
     }
 }
