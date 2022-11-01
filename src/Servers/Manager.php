@@ -130,13 +130,10 @@ class Manager
         throw new NotFoundException('Server not found.');
     }
 
-    /**
-     * Get all the server connection instances.
-     *
-     * @return array A array containing all the server connection instances.
-     */
     public function getServers(): array
     {
+        ksort($this->servers);
+
         return $this->servers;
     }
 
