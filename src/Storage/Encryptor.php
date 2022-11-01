@@ -21,17 +21,9 @@ class Encryptor
     protected string $cipher = 'AES-256-CBC';
     /** @var int IV Size */
     protected int $ivSize = 16;
-    /** @var string Encryption key */
-    protected string $key;
 
-    /**
-     * Encryptor constructor.
-     *
-     * @param $key
-     */
-    public function __construct($key)
+    public function __construct(protected string $key)
     {
-        $this->key = $key;
     }
 
     /**

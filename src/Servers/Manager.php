@@ -6,24 +6,12 @@ use Exception;
 use Yoke\Servers\Exceptions\NotFoundException;
 use Yoke\Storage\Manager as StorageManager;
 
-/**
- * Class Manager.
- *
- * Server connections manager.
- */
 class Manager
 {
-    protected StorageManager $storageManager;
-    protected array $servers = [];
-
-    /**
-     * Manager constructor.
-     */
-    public function __construct()
-    {
-        // created a new Manager instance.
-        $this->storageManager = new StorageManager();
-
+    public function __construct(
+        protected StorageManager $storageManager = new StorageManager(),
+        protected array $servers = []
+    ) {
         // Load servers from storage.
         $this->loadServers();
     }
@@ -103,7 +91,11 @@ class Manager
     {
         $servers = [];
 
-        // Parse all current instances into the array representation.
+        /**
+         * Parse all current instances into the array representation.
+         *
+         * @var Server $server
+         */
         foreach ($this->servers as $server) {
             $servers[] = $server->toArray();
         }
