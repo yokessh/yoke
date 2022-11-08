@@ -15,8 +15,6 @@ With security in mind, all information about your servers is encrypted using **A
 
 ### Installation
 
-> .phar distribution may be available in the future.
-
 In order to use Yoke, you need PHP 8+ installed, with openssl extension enables (default on most installs)
 
 The installation process is based on the global composer packages, so you need to have a working composer install with the correct binary path settings. [Read this tutorial ](https://akrabat.com/global-installation-of-php-tools-with-composer/)
@@ -48,17 +46,17 @@ Registering a new Server Configuration!
 
 Server connection alias (server1): sample-server
 
-Server username (none): sample-user
+👤 Server username (none): sample-user
 
-Server hostname or IP Address (192.168.0.1): server.sampleapp.com
+🖥️ Server hostname or IP Address (192.168.0.1): server.sampleapp.com
 
-Server Port (22): 6262
+🚪 Server Port (22): 6262
 
-Authentication Method:[system|key|password] (system): key
+🔐 Authentication Method:[system|key|password] (system): key
 
-Private Key (~/.ssh/id_rsa):
+🔑 Private Key (~/.ssh/id_rsa):
 
-Server registered successfully!
+Server registered successfully! 🥳
 ```
 
 #### Connecting
