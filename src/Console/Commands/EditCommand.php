@@ -57,6 +57,12 @@ class EditCommand extends BaseCommand
             $server->authenticationMethod
         );
 
+        if ($this->askConfirmation(
+            "Is there any SSH option you would like to add? (eg: -o 'PubkeyAcceptedKeyTypes +ssh-rsa')"
+        )) {
+            $server->sshOption = $this->ask('Option:');
+        }
+
         $newData = $server->toArray();
 
         $table = new Table($this->output);

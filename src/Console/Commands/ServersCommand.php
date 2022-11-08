@@ -51,7 +51,7 @@ class ServersCommand extends BaseCommand
         // New table instance.
         $table = new Table($this->output);
         // Set table headers.
-        $table->setHeaders(['Name', 'Host', 'Username', 'Port', 'Auth. Method']);
+        $table->setHeaders(['Name', 'Host', 'Username', 'Port', 'Auth. Method', 'SSH Option']);
 
         // Loop on available connections to build the rows.
         $rows = [];
@@ -64,6 +64,7 @@ class ServersCommand extends BaseCommand
                 $server->user,
                 "<fg=yellow>{$server->port}</>",
                 $server->authenticationMethod,
+                $server->sshOption,
             ];
         }
 

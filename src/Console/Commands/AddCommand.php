@@ -58,6 +58,12 @@ class AddCommand extends BaseCommand
             $serverData['privateKey'] = $this->ask('Private Key (~/.ssh/id_rsa):', "{$_SERVER['HOME']}/.ssh/id_rsa");
         }
 
+        if ($this->askConfirmation(
+            "Is there any SSH option you would like to add? (eg: -o 'PubkeyAcceptedKeyTypes +ssh-rsa')"
+        )) {
+            $serverData['sshOption'] = $this->ask('Option:');
+        }
+
         if ('password' === $serverData['authenticationMethod']) {
             // Ask for password if password as selected as authentication method.
             $serverData['password'] = $this->ask('Password:');

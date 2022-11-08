@@ -14,6 +14,7 @@ namespace Yoke\Servers;
  * @property string $authenticationMethod
  * @property string $password
  * @property string $privateKey
+ * @property string $sshOption
  */
 class Server
 {
@@ -24,6 +25,7 @@ class Server
     protected string $authenticationMethod = 'password';
     protected string $password = '';
     protected string $privateKey = '';
+    protected string $sshOption = '';
 
     /**
      * Server constructor.
@@ -110,7 +112,13 @@ class Server
      */
     public function connectionString(?bool $showPassword = false): string
     {
-        $connectionString = "ssh {$this->keyParameter()} {$this->portParameter()} {$this->userAndHostParameter()}";
+        $connectionString = sprintf(
+            'ssh %s %s %s %s',
+            $this->keyParameter(),
+            $this->portParameter(),
+            $this->userAndHostParameter(),
+            $this->sshOption
+        );
 
         if ('password' === $this->authenticationMethod && $showPassword) {
             $connectionString = "{$this->passwordHelper()}\n{$connectionString}";
@@ -152,6 +160,10 @@ class Server
 
         if (isset($this->privateKey)) {
             $configArray['privateKey'] = $this->privateKey;
+        }
+
+        if (isset($this->sshOption)) {
+            $configArray['sshOption'] = $this->sshOption;
         }
 
         return $configArray;
