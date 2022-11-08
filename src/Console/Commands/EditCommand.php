@@ -47,23 +47,29 @@ class EditCommand extends BaseCommand
             return self::INVALID;
         }
 
-        $oldData = $server->toArray();
+        $oldData = $newData = $server->toArray();
 
-        $server->user = $this->ask(sprintf('Server username (%s):', $server->user), $server->user);
-        $server->host = $this->ask(sprintf('Server hostname or IP Address (%s):', $server->host), $server->host);
-        $server->port = $this->ask(sprintf('Server Port (%s):', $server->port), $server->port);
-        $server->authenticationMethod = $this->ask(
-            sprintf('Authentication Method [system|key|password]: (%s):', $server->authenticationMethod),
+        $newData['user'] = $this->ask(sprintf('👤 Server username (current: %s):', $server->user), $server->user);
+        $newData['host'] = $this->ask(
+            sprintf('🖥️ Server hostname or IP Address (current: %s):', $server->host),
+            $server->host
+        );
+        $newData['port'] = $this->ask(sprintf('🚪 Server Port (current: %s):', $server->port), $server->port);
+        $newData['authenticationMethod'] = $this->ask(
+            sprintf('🔐 Authentication Method [system|key|password]: (current: %s):', $server->authenticationMethod),
             $server->authenticationMethod
         );
 
-        if ($this->askConfirmation(
-            "Is there any SSH option you would like to add? (eg: -o 'PubkeyAcceptedKeyTypes +ssh-rsa')"
-        )) {
-            $server->sshOption = $this->ask('Option:');
+        if ('key' === $server->authenticationMethod) {
+            // Ask for private key if key was selected as authentication method.
+            $newData['privateKey'] = $this->ask("🔑 Private Key (current: {$server->privateKey}):", $server->privateKey);
         }
 
-        $newData = $server->toArray();
+        if ($this->askConfirmation(
+            "🗄️ Is there any SSH option you would like to add? (eg: -o 'PubkeyAcceptedKeyTypes +ssh-rsa')"
+        )) {
+            $newData['sshOption'] = $this->ask("Option (current: {$server->sshOption}):", $server->sshOption);
+        }
 
         $table = new Table($this->output);
         $table->setHeaders(['Field', 'Old', 'New']);
@@ -80,12 +86,12 @@ class EditCommand extends BaseCommand
         if ($this->askConfirmation('Confirm the changes?')) {
             $this->manager->createServer($server->toArray());
 
-            $this->info('Done! :D');
+            $this->info('Done! 🥳');
 
             return self::SUCCESS;
         }
 
-        $this->writeln('');
+        $this->writeln('Nothing has been changed. 🙃');
 
         return self::SUCCESS;
     }
